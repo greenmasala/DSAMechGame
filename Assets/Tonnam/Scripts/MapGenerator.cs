@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int chunkSize = 10;
     [SerializeField] private int subdivide = 1;
     [SerializeField] private int renderChunks = 5;
+    [SerializeField] private float heightMult = 5;
+    [SerializeField] private float noiseScale = 5;
 
     [Header("References")]
     [SerializeField] private MeshFilter meshFilter;
@@ -36,8 +39,19 @@ public class MapGenerator : MonoBehaviour
 
         meshFilter.sharedMesh.SetVertices(vertices);
         meshFilter.sharedMesh.SetTriangles(triangles, 0);
+        RecalculateMesh();
+    }
+
+    [ContextMenu("Recalculate Mesh")]
+    private void RecalculateMesh()
+    {
         meshFilter.sharedMesh.RecalculateNormals();
+        meshFilter.sharedMesh.RecalculateUVDistributionMetrics();
         meshCollider.sharedMesh = meshFilter.sharedMesh;
+    }
+
+    private void SyncHeightMap()
+    {
     }
 
     private void GenerateChunk(Vector2Int chunkPosition, ref List<Vector3> vertices, ref List<int> triangles)
@@ -58,10 +72,20 @@ public class MapGenerator : MonoBehaviour
         {
             for (int iy = 0; iy < subdivide; iy++)
             {
-                vertices.Add(new Vector3(x + ix * quadSize,       0,   y + iy * quadSize));
-                vertices.Add(new Vector3(x + ix * quadSize + quadSize,       0,   y + iy * quadSize));
-                vertices.Add(new Vector3(x + ix * quadSize,       0,   y + iy * quadSize + quadSize));
-                vertices.Add(new Vector3(x + ix * quadSize + quadSize,       0,   y + iy * quadSize + quadSize));
+                Vector2 v1 = new Vector2(x + ix * quadSize,              y + iy * quadSize);
+                Vector2 v2 = new Vector2(x + ix * quadSize + quadSize,   y + iy * quadSize);
+                Vector2 v3 = new Vector2(x + ix * quadSize,              y + iy * quadSize + quadSize);
+                Vector2 v4 = new Vector2(x + ix * quadSize + quadSize,   y + iy * quadSize + quadSize);
+
+                float h1 = Mathf.PerlinNoise(v1.x, v1.y) * heightMult;
+                float h2 = Mathf.PerlinNoise(v2.x, v2.y) * heightMult;
+                float h3 = Mathf.PerlinNoise(v3.x, v3.y) * heightMult;
+                float h4 = Mathf.PerlinNoise(v4.x, v4.y) * heightMult;
+
+                vertices.Add(new Vector3(v1.x,   h1,   v1.y));
+                vertices.Add(new Vector3(v2.x,   h2,   v2.y));
+                vertices.Add(new Vector3(v3.x,   h3,   v3.y));
+                vertices.Add(new Vector3(v4.x,   h4,   v4.y));
 
                 int vertIndex = vertices.Count - 4;
                 triangles.Add(vertIndex);
