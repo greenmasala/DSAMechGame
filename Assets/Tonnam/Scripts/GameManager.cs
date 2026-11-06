@@ -25,6 +25,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnPlayerDie()
+    {
+        if (isGameOver) return;
+
+        Debug.Log("Player died! Game Over!");
+        GameOver();
+    }
+
 
     private void Awake()
     {
