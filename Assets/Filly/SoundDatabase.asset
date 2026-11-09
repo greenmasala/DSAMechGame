@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 078bf84eab39a8444b922d1ad4e50cf4, type: 3}
   m_Name: SoundDatabase
   m_EditorClassIdentifier: Assembly-CSharp::SoundDatabase
-  sounds: []
+  sounds:
+  - type: 1
+    clip: {fileID: 8300000, guid: c8ce7d7d6361ada4fbf4fca0a2ba124d, type: 3}
+    volume: 1
