@@ -13,7 +13,7 @@ public class Player : Entity
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("LAUNCHING");
             Weapons[0].OnUse(this);
@@ -23,13 +23,13 @@ public class Player : Entity
         //    Weapons[0].OnUse(this);
         //}
 
-        if (Input.GetMouseButton(1) & Weapons[1].SemiAuto)
+        if (Input.GetMouseButtonDown(1))
         {
             Weapons[1].OnUse(this);
         }
-        else if (Input.GetMouseButtonDown(1) & !Weapons[1].SemiAuto)
-        {
-            Weapons[1].OnUse(this);
-        }
+        //else if (Input.GetMouseButtonDown(1) & !Weapons[1].SemiAuto)
+        //{
+        //    Weapons[1].OnUse(this);
+        //}
     }
 }

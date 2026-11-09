@@ -156,10 +156,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8997996947095583982}
   - component: {fileID: 8616685848737228382}
-  - component: {fileID: 8616685848737228371}
+  - component: {fileID: 7915115364003447150}
   - component: {fileID: 1978471637655604388}
   - component: {fileID: 5420857361349278248}
   - component: {fileID: 8616685848737228376}
+  - component: {fileID: 2376867953671488630}
   m_Layer: 8
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -209,7 +210,7 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
---- !u!114 &8616685848737228371
+--- !u!114 &7915115364003447150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,13 +219,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8616685848737228372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55919ac34a26952479f3fc91f777b2fa, type: 3}
+  m_Script: {fileID: 11500000, guid: e2f10d784b2ac71459d262ea9d529f08, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   MoveSpeed: 4
-  SprintSpeed: 6
+  SprintSpeed: 10
   RotationSpeed: 1
   SpeedChangeRate: 10
+  energy: 100
+  dashSpeed: 10
+  dashTime: 0.25
+  PlayerRef: {fileID: 0}
   JumpHeight: 1.2
   Gravity: -15
   JumpTimeout: 0.1
@@ -236,8 +241,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   CinemachineCameraTarget: {fileID: 4135013735270702863}
-  TopClamp: 89
-  BottomClamp: -89
+  TopClamp: 90
+  BottomClamp: -90
+  Energy: {fileID: 0}
 --- !u!114 &1978471637655604388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +379,23 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2376867953671488630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb06f3d650acb64284451d307c7aee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  hp: 1000
+  moveSpeed: 0
+  Weapons:
+  - {fileID: 3021224153774202723}
+  - {fileID: 3305560812387151726}
 --- !u!1 &8647590742004079351
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,6 +515,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 271740273592162492, guid: df8a44f82ad8e64478bad11849e4127d, type: 3}
   m_PrefabInstance: {fileID: 2786200829494839663}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3305560812387151726 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 825606719621686785, guid: df8a44f82ad8e64478bad11849e4127d, type: 3}
+  m_PrefabInstance: {fileID: 2786200829494839663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2474e53eed8b0bd4f8cc76c38b50270b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GatlingGun
 --- !u!1001 &8779444910337360859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -557,6 +591,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f73b9f88aa420ee40b7b0d54b0056085, type: 3}
+--- !u!114 &3021224153774202723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5781304694757366968, guid: f73b9f88aa420ee40b7b0d54b0056085, type: 3}
+  m_PrefabInstance: {fileID: 8779444910337360859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f3e9603fcbb754fa8f3fc11ecaa5e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArtilleryGun
 --- !u!4 &5322425864287246352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3462094653991705547, guid: f73b9f88aa420ee40b7b0d54b0056085, type: 3}
