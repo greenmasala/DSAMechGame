@@ -8,7 +8,6 @@ public class ArtilleryGun : Equipment
     {
         if (CanShoot)
         {
-            Debug.Log("SARGE THROW IT BACK");
             StartCoroutine(ShootWithDelay());
         }
     }

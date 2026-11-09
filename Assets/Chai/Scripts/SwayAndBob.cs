@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class SwayAndBob : MonoBehaviour
 {
-    public FirstPersonController mover;
+    public PlayerController Mover;
+    //Transform weaponHolderRoot;
+    //public Vector3 cameraRoot;
+    //float speed = 0.1f;
 
     [Header("Sway")]
     public float step = 0.01f;
@@ -38,7 +41,11 @@ public class SwayAndBob : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //var weaponHolder = GameObject.FindWithTag("WeaponHolder");
+        //weaponHolderRoot = weaponHolder.transform;
 
+        //var camera = GameObject.FindWithTag("CinemachineTarget");
+        //cameraRoot = camera.transform.position;
     }
 
     // Update is called once per frame
@@ -50,6 +57,7 @@ public class SwayAndBob : MonoBehaviour
         SwayRotation();
         BobOffset();
         BobRotation();
+        //RotateWeaponWithCamera();
 
         CompositePositionRotation();
     }
@@ -94,9 +102,9 @@ public class SwayAndBob : MonoBehaviour
 
     void BobOffset()
     {
-        speedCurve += Time.deltaTime * (mover.Grounded ? (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) * bobExaggeration : 1f) + 0.01f;
+        speedCurve += Time.deltaTime * (Mover.Grounded ? (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) * bobExaggeration : 1f) + 0.01f;
 
-        bobPosition.x = (curveCos * bobLimit.x * (mover.Grounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
+        bobPosition.x = (curveCos * bobLimit.x * (Mover.Grounded ? 1 : 0)) - (walkInput.x * travelLimit.x);
         bobPosition.y = (curveSin * bobLimit.y) - (Input.GetAxis("Vertical") * travelLimit.y);
         bobPosition.z = -(walkInput.y * travelLimit.z);
     }
@@ -107,4 +115,10 @@ public class SwayAndBob : MonoBehaviour
         bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
         bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
     }
+
+    //void RotateWeaponWithCamera()
+    //{
+    //    transform.rotation = Quaternion.Slerp(transform.rotation, weaponHolderRoot.rotation, Time.deltaTime * speed);
+    //    transform.position = weaponHolderRoot.TransformPoint(cameraRoot);
+    //}
 }
