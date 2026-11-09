@@ -12,7 +12,8 @@ public class Entity : MonoBehaviour
         if (hp <= 0) OnDead();
     }
 
-    public void OnDead()
+    // [Ben] Made this virtual so my Jeep can blow up when it dies instead of just disappearing
+    public virtual void OnDead()
     {
         Destroy(this.gameObject);
     }
