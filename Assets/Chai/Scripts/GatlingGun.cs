@@ -5,6 +5,7 @@ public class GatlingGun : Equipment
     float spreadFactor = 2f;
     bool hasShot = false;
     Ray rayForGizmo;
+
     public override void OnUse(Player player)
     {
         Shoot();

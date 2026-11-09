@@ -4,6 +4,7 @@ using UnityEngine;
 public class ArtilleryGun : Equipment
 {
     public GameObject AmmoObj;
+
     public override void OnUse(Player player)
     {
         if (CanShoot)
