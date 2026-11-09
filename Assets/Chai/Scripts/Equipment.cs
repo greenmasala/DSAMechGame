@@ -8,6 +8,7 @@ public class Equipment : MonoBehaviour
     public float Range; //for raycasts
     public float Power; //for projectiles
     public bool CanShoot;
+    public bool SemiAuto;
     public Transform ShootPoint;
 
     private void Awake()
