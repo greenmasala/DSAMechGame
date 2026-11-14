@@ -1,44 +1,58 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour
 {
     public static event Action<MapData, MapChunk> OnChunkGenerated;
     public MapData Map => mapData;
 
-    [SerializeField] private int chunkSize = 10;
-    [SerializeField] private int subdivide = 1;
-    [SerializeField] private int renderChunks = 5;
-    [SerializeField] private float heightMult = 5;
-    [SerializeField] private float noiseScale = 5;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private int chunkSize = 10;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private int subdivide = 1;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private int renderChunks = 5;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private float heightMult = 5;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private float frequency = 5;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private float jitter = 1;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private FastNoiseLite.CellularDistanceFunction distanceFunction;
+    [SerializeField] [OnValueChanged(nameof(GenerateMap))] private FastNoiseLite.CellularReturnType returnType;
 
     [Header("References")]
     [SerializeField] private MeshFilter meshFilter;
     [SerializeField] private MeshCollider meshCollider;
 
     private MapData mapData;
+    private FastNoiseLite noise;
     
-    [ContextMenu("Generate Map")]
+    [Button]
     public void GenerateMap()
     {
         mapData = new MapData(chunkSize);
         meshFilter.sharedMesh = new Mesh();
 
+        noise = new FastNoiseLite(seed: 1337);
+        noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
+        noise.SetCellularDistanceFunction(distanceFunction);
+        noise.SetCellularReturnType(returnType);
+        noise.SetCellularJitter(jitter);
+        noise.SetFractalType(FastNoiseLite.FractalType.None);
+        noise.SetFrequency(frequency);
+
         var vertices = new List<Vector3>();
         var triangles = new List<int>();
+        var uv = new List<Vector2>();
 
         for(int y = 0; y < renderChunks; y++)
         {
             for(int x = 0; x < renderChunks; x++)
             {
-                GenerateChunk(new Vector2Int(x, y), ref vertices, ref triangles);
+                GenerateChunk(new Vector2Int(x, y), ref vertices, ref triangles, ref uv);
             }
         }
 
         meshFilter.sharedMesh.SetVertices(vertices);
         meshFilter.sharedMesh.SetTriangles(triangles, 0);
+        meshFilter.sharedMesh.SetUVs(0, uv);
         RecalculateMesh();
     }
 
@@ -46,15 +60,10 @@ public class MapGenerator : MonoBehaviour
     private void RecalculateMesh()
     {
         meshFilter.sharedMesh.RecalculateNormals();
-        meshFilter.sharedMesh.RecalculateUVDistributionMetrics();
         meshCollider.sharedMesh = meshFilter.sharedMesh;
     }
 
-    private void SyncHeightMap()
-    {
-    }
-
-    private void GenerateChunk(Vector2Int chunkPosition, ref List<Vector3> vertices, ref List<int> triangles)
+    private void GenerateChunk(Vector2Int chunkPosition, ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector2> uv)
     {
         if (mapData.chunks.ContainsKey(chunkPosition))
             return;
@@ -77,15 +86,20 @@ public class MapGenerator : MonoBehaviour
                 Vector2 v3 = new Vector2(x + ix * quadSize,              y + iy * quadSize + quadSize);
                 Vector2 v4 = new Vector2(x + ix * quadSize + quadSize,   y + iy * quadSize + quadSize);
 
-                float h1 = Mathf.PerlinNoise(v1.x, v1.y) * heightMult;
-                float h2 = Mathf.PerlinNoise(v2.x, v2.y) * heightMult;
-                float h3 = Mathf.PerlinNoise(v3.x, v3.y) * heightMult;
-                float h4 = Mathf.PerlinNoise(v4.x, v4.y) * heightMult;
+                float h1 = noise.GetNoise(v1.x, v1.y) * heightMult;
+                float h2 = noise.GetNoise(v2.x, v2.y) * heightMult;
+                float h3 = noise.GetNoise(v3.x, v3.y) * heightMult;
+                float h4 = noise.GetNoise(v4.x, v4.y) * heightMult;
 
                 vertices.Add(new Vector3(v1.x,   h1,   v1.y));
                 vertices.Add(new Vector3(v2.x,   h2,   v2.y));
                 vertices.Add(new Vector3(v3.x,   h3,   v3.y));
                 vertices.Add(new Vector3(v4.x,   h4,   v4.y));
+
+                uv.Add(new Vector2(ix / (float)subdivide, iy / (float)subdivide));
+                uv.Add(new Vector2((ix + 1) / (float)subdivide, iy / (float)subdivide));
+                uv.Add(new Vector2(ix / (float)subdivide, (iy + 1) / (float)subdivide));
+                uv.Add(new Vector2((ix + 1) / (float)subdivide, (iy + 1) / (float)subdivide));
 
                 int vertIndex = vertices.Count - 4;
                 triangles.Add(vertIndex);
