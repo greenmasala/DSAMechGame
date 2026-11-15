@@ -12,13 +12,13 @@ public class PopulationManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameOver += ResetPopulation;
-        MapGenerator.OnChunkGenerated += Populate;
+        // MapGenerator.OnChunkGenerated += Populate;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameOver -= ResetPopulation;
-        MapGenerator.OnChunkGenerated -= Populate;
+        // MapGenerator.OnChunkGenerated -= Populate;
     }
 
     public virtual void Populate(MapData mapData, MapChunk chunk)
@@ -28,7 +28,7 @@ public class PopulationManager : MonoBehaviour
 
         for (int i = 0; i < toSpawn; i++)
         {
-            Vector3 spawnPosition = mapData.GetRandomPositionInChunk(chunk.position);
+            Vector3 spawnPosition = mapData.GetRandomPositionInChunk(chunk.ChunkPosition);
             if (spawnPosition != Vector3.zero)
             {
                 SpawnPopulation(mapData, chunk, spawnPosition);
