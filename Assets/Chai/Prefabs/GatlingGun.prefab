@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 9177548777323701115}
   - component: {fileID: 6128397788295276148}
   - component: {fileID: 825606719621686785}
+  - component: {fileID: 6451833413028514701}
   m_Layer: 8
   m_Name: GatlingGun
   m_TagString: Untagged
@@ -137,10 +138,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GatlingGun
   Name: 
   Damage: 15
-  Ammo: 100
-  FireRate: 0.2
+  Ammo: 0
   Range: 32.81
   Power: 0
   CanShoot: 0
-  InputType: 1
+  SemiAuto: 0
   ShootPoint: {fileID: 6550539396289534956}
+--- !u!136 &6451833413028514701
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8843221022471887631}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
