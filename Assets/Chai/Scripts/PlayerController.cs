@@ -1,8 +1,6 @@
 using StarterAssets;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -27,7 +25,6 @@ public class PlayerController : MonoBehaviour
     Vector3 inputDirection;
     [SerializeField] float dashSpeed;
     [SerializeField] float dashTime;
-    Vector3 _lastVel;
     
     public Player PlayerRef;
     bool jumped;
@@ -128,7 +125,6 @@ public class PlayerController : MonoBehaviour
         GroundedCheck();
         Move();
         Dash();
-        Jetpack();
     }
 
     private void LateUpdate()
@@ -310,36 +306,19 @@ public class PlayerController : MonoBehaviour
     {
         float startTime = Time.time;
 
+        //if (inputDirection == Vector3.zero)
+        //{
+        //    inputDirection = transform.forward;
+        //}
+
+        //Debug.Log(inputDirection);
+
         while (Time.time < startTime + dashTime)
         {
             _controller.Move(inputDirection * dashSpeed * Time.deltaTime);
 
             yield return null;
         }
-    }
-
-    void Jetpack()
-    {
-        if (_controller.isGrounded)
-        {
-            // We are grounded, so recalculate
-            // move direction directly from axes
-            inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0,
-                                    Input.GetAxis("Vertical"));
-            inputDirection = transform.TransformDirection(inputDirection);
-            inputDirection *= MoveSpeed;
-
-            if (Input.GetKey(KeyCode.V))
-            {
-                inputDirection.y = JumpHeight;
-            }
-        }
-
-        // Apply gravity
-        inputDirection.y -= Gravity * Time.deltaTime;
-
-        // Move the controller
-        _controller.Move(inputDirection * Time.deltaTime);
     }
 }
 #endif
