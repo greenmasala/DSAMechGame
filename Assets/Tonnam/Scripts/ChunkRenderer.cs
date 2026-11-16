@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -32,7 +33,7 @@ public class ChunkRenderer : MonoBehaviour
         MapGenerator.OnChunkGenerated -= HandleChunkGenerated;
     }
 
-    private void HandleChunkGenerated(NativeArray<MapChunk> chunks)
+    private void HandleChunkGenerated(IEnumerable<MapChunk> chunks)
     {
         foreach (var chunk in chunks)
         {

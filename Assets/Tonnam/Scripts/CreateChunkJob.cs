@@ -7,19 +7,26 @@ using UnityEngine;
 [BurstCompile]
 public struct CreateChunkJob : IJobParallelFor
 {
-    public NativeArray<MapChunk> Chunks;
-    public MapConfig Config;
-    public FastNoiseLite noise;
+    [ReadOnly] public NativeArray<int2> ChunkPositions;
+    [ReadOnly] public MapConfig Config;
+    [ReadOnly] public FastNoiseLite noise;
+
+    [ReadOnly] public int VerticesPerChunk;
+    [ReadOnly] public int TrianglesPerChunk;
+    [ReadOnly] public int UVsPerChunk;
+
+    // output
+    [NativeDisableParallelForRestriction] public NativeArray<float3> Vertices;
+    [NativeDisableParallelForRestriction] public NativeArray<int> Triangles;
+    [NativeDisableParallelForRestriction] public NativeArray<float2> UVs;
 
     public void Execute(int index)
     {
-        var vertices  = new NativeList<float3>(Allocator.Temp);
-        var triangles = new NativeList<int>(Allocator.Temp);
-        var uv        = new NativeList<float2>(Allocator.Temp);
+        int offsetV = index * VerticesPerChunk;
+        int offsetT = index * TrianglesPerChunk;
+        int offsetU = index * UVsPerChunk;
 
-        var chunk = Chunks[index];
-
-        int2 chunkPosition = chunk.ChunkPosition;
+        int2 chunkPosition = ChunkPositions[index];
         int chunkSize = Config.ChunkSize;
         int subdivide = Config.Subdivide;
         float heightMult = Config.HeightMult;
@@ -43,31 +50,26 @@ public struct CreateChunkJob : IJobParallelFor
                 float h3 = noise.GetNoise(v3.x, v3.y) * heightMult;
                 float h4 = noise.GetNoise(v4.x, v4.y) * heightMult;
 
-                vertices.Add(new Vector3(v1.x,   h1,   v1.y));
-                vertices.Add(new Vector3(v2.x,   h2,   v2.y));
-                vertices.Add(new Vector3(v3.x,   h3,   v3.y));
-                vertices.Add(new Vector3(v4.x,   h4,   v4.y));
+                int qIndex = (iy * subdivide + ix) * 4; // 4 vertices per quad
+                int tIndex = (iy * subdivide + ix) * 6; // 6 indices per quad (2 triangles)
 
-                uv.Add(new Vector2(ix / (float)subdivide, iy / (float)subdivide));
-                uv.Add(new Vector2((ix + 1) / (float)subdivide, iy / (float)subdivide));
-                uv.Add(new Vector2(ix / (float)subdivide, (iy + 1) / (float)subdivide));
-                uv.Add(new Vector2((ix + 1) / (float)subdivide, (iy + 1) / (float)subdivide));
+                Vertices[offsetV + qIndex]     = new float3(v1.x, h1, v1.y);
+                Vertices[offsetV + qIndex + 1] = new float3(v2.x, h2, v2.y);
+                Vertices[offsetV + qIndex + 2] = new float3(v3.x, h3, v3.y);
+                Vertices[offsetV + qIndex + 3] = new float3(v4.x, h4, v4.y);
 
-                int vertIndex = vertices.Count - 4;
-                triangles.Add(vertIndex);
-                triangles.Add(vertIndex + 2);
-                triangles.Add(vertIndex + 1);
-                
-                triangles.Add(vertIndex + 1);
-                triangles.Add(vertIndex + 2);
-                triangles.Add(vertIndex + 3);
+                UVs[offsetU + qIndex]     = new float2(ix / (float)subdivide, iy / (float)subdivide);
+                UVs[offsetU + qIndex + 1] = new float2((ix + 1) / (float)subdivide, iy / (float)subdivide);
+                UVs[offsetU + qIndex + 2] = new float2(ix / (float)subdivide, (iy + 1) / (float)subdivide);
+                UVs[offsetU + qIndex + 3] = new float2((ix + 1) / (float)subdivide, (iy + 1) / (float)subdivide);
+
+                Triangles[offsetT + tIndex]     = qIndex;
+                Triangles[offsetT + tIndex + 1] = qIndex + 2;
+                Triangles[offsetT + tIndex + 2] = qIndex + 1;
+                Triangles[offsetT + tIndex + 3] = qIndex + 1;
+                Triangles[offsetT + tIndex + 4] = qIndex + 2;
+                Triangles[offsetT + tIndex + 5] = qIndex + 3;
             }
         }
-
-        chunk.SetVertices(vertices);
-        chunk.SetTriangles(triangles);
-        chunk.SetUVs(uv);
-
-        Chunks[index] = chunk;
     }
 }

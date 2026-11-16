@@ -1,6 +1,7 @@
 using System;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine;
 
 public struct MapChunk : IDisposable
 {
@@ -21,6 +22,15 @@ public struct MapChunk : IDisposable
         uv         = new NativeList<float2>(Allocator.Persistent);
     }
 
+    public void SetVertices(NativeSlice<float3> newVertices)
+    {
+        if (vertices.IsCreated) vertices.Dispose();
+        Debug.Log($"Vertices: {newVertices.Length}");
+        vertices = new NativeList<float3>(newVertices.Length, Allocator.Persistent);
+        vertices.ResizeUninitialized(newVertices.Length);
+        newVertices.CopyTo(vertices.AsArray());
+    }
+
     public void SetVertices(NativeList<float3> newVertices)
     {
         if (vertices.IsCreated) vertices.Dispose();
@@ -33,10 +43,28 @@ public struct MapChunk : IDisposable
         triangles = newTriangles;
     }
 
+    public void SetTriangles(NativeSlice<int> newTriangles)
+    {
+        if (triangles.IsCreated) triangles.Dispose();
+        Debug.Log($"Triangles: {newTriangles.Length}");
+        triangles = new NativeList<int>(newTriangles.Length, Allocator.Persistent);
+        triangles.ResizeUninitialized(newTriangles.Length);
+        newTriangles.CopyTo(triangles.AsArray());
+    }
+
     public void SetUVs(NativeList<float2> newUVs)
     {
         if (uv.IsCreated) uv.Dispose();
         uv = newUVs;
+    }
+
+    public void SetUVs(NativeSlice<float2> newUVs)
+    {
+        if (uv.IsCreated) uv.Dispose();
+        Debug.Log($"UVs: {newUVs.Length}");
+        uv = new NativeList<float2>(newUVs.Length, Allocator.Persistent);
+        uv.ResizeUninitialized(newUVs.Length);
+        newUVs.CopyTo(uv.AsArray());
     }
 
     public (NativeList<float3> Vertices, NativeList<int> Triangles, NativeList<float2> UV) GetMeshData()
@@ -46,8 +74,10 @@ public struct MapChunk : IDisposable
 
     public void Dispose()
     {
+        Debug.Log("Dispose");
         if (ObjectData.IsCreated) ObjectData.Dispose();
         if (vertices.IsCreated)   vertices.Dispose();
         if (triangles.IsCreated)  triangles.Dispose();
+        if (uv.IsCreated)         uv.Dispose();
     }
 }

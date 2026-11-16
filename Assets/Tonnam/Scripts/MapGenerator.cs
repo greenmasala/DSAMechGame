@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.Collections;
 using Unity.Jobs;
@@ -7,10 +8,10 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static event Action<NativeArray<MapChunk>> OnChunkGenerated;
+    public static event Action<IEnumerable<MapChunk>> OnChunkGenerated;
     public MapData Map => mapData;
 
-    private NativeParallelHashMap<int2, MapChunk> loadedChunks;
+    private Dictionary<int2, MapChunk> loadedChunks;
 
 
     [Header("Map Settings")]
@@ -41,18 +42,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] [OnValueChanged(nameof(GenerateMap))] private FastNoiseLite.CellularDistanceFunction distanceFunction;
     [SerializeField] [OnValueChanged(nameof(GenerateMap))] private FastNoiseLite.CellularReturnType returnType;
 
-    [Header("References")]
-    [SerializeField] private MeshFilter meshFilter;
-    [SerializeField] private MeshCollider meshCollider;
-
     private MapData mapData;
     private FastNoiseLite noise;
     
     [Button]
     public void GenerateMap()
     {
+        // ----------- SETUP ---------------
         mapData = new MapData(chunkSize);
-        meshFilter.sharedMesh = new Mesh();
 
         noise = new FastNoiseLite(seed: 1337);
         noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
@@ -62,7 +59,7 @@ public class MapGenerator : MonoBehaviour
         noise.SetFractalType(FastNoiseLite.FractalType.None);
         noise.SetFrequency(frequency);
 
-        var chunksToCreate = new NativeArray<MapChunk>(renderChunks * renderChunks, Allocator.Persistent);
+        var chunksToCreate = new NativeArray<int2>(renderChunks * renderChunks, Allocator.Persistent);
 
         for(int y = 0; y < renderChunks; y++)
         {
@@ -70,20 +67,79 @@ public class MapGenerator : MonoBehaviour
             {
                 Vector2Int chunkPosition = new Vector2Int(x, y);
                 int index = y * renderChunks + x;
-                chunksToCreate[index] = new MapChunk(chunkPosition);
+                chunksToCreate[index] = chunkPosition;
             }
         }
 
+        int verticesPerChunk = subdivide * subdivide * 4; // 4 vertices per quad
+        int trisPerChunk = subdivide * subdivide * 6; // 6 indices per quad (2 triangles)
+        int uvsPerChunk = subdivide * subdivide * 4; // 4 UVs per quad
+        int totalChunks = chunksToCreate.Length;
+
+        var vertices = new NativeArray<float3>(verticesPerChunk * totalChunks, Allocator.Persistent);
+        var triangles = new NativeArray<int>(trisPerChunk * totalChunks, Allocator.Persistent);
+        var uv = new NativeArray<float2>(uvsPerChunk * totalChunks, Allocator.Persistent);
+
+
+        // ----------- CREATE CHUNKS IN BATCH ---------------
         var createChunkJob = new CreateChunkJob
         {
-            Chunks = chunksToCreate,
+            ChunkPositions = chunksToCreate,
             Config = new MapConfig(renderChunks, chunkSize, subdivide, heightMult),
-            noise = noise
+            noise = noise,
+
+            VerticesPerChunk = verticesPerChunk,
+            TrianglesPerChunk = trisPerChunk,
+            UVsPerChunk = uvsPerChunk,
+
+            Vertices = vertices,
+            Triangles = triangles,
+            UVs = uv
         }.Schedule(chunksToCreate.Length, 1);
-
         createChunkJob.Complete();
-        OnChunkGenerated?.Invoke(chunksToCreate);
 
+
+        // ----------- SLICE DATA AND CREATE MAPCHUNKS ---------------
+        for(int i = 0; i < chunksToCreate.Length; i++)
+        {
+            MapChunk chunk = new MapChunk(chunksToCreate[i]);
+            int startIndexV = i * verticesPerChunk;
+            int endIndexV = startIndexV + verticesPerChunk;
+            chunk.SetVertices(vertices.Slice(startIndexV, endIndexV - startIndexV));
+
+            int startIndexT = i * trisPerChunk;
+            int endIndexT = startIndexT + trisPerChunk;
+            chunk.SetTriangles(triangles.Slice(startIndexT, endIndexT - startIndexT));
+
+            int startIndexU = i * uvsPerChunk;
+            int endIndexU = startIndexU + uvsPerChunk;
+            chunk.SetUVs(uv.Slice(startIndexU, endIndexU - startIndexU));
+
+            loadedChunks.TryAdd(chunksToCreate[i], chunk);
+        }
+        OnChunkGenerated?.Invoke(loadedChunks.Values);
+
+        // ----------- CLEANUP ---------------
         chunksToCreate.Dispose();
+        vertices.Dispose();
+        triangles.Dispose();
+        uv.Dispose();
+    }
+
+    private void OnEnable()
+    {
+        loadedChunks = new Dictionary<int2, MapChunk>();
+    }
+
+    private void OnDisable()
+    {
+        if (loadedChunks != null)
+        {
+            foreach (var chunk in loadedChunks.Values)
+            {
+                chunk.Dispose();
+            }
+            loadedChunks.Clear();
+        }
     }
 }
