@@ -49,7 +49,7 @@ public class CustomPlayerController : MonoBehaviour
     private void Update()
     {
         // ground check
-        Grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        Grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f);
 
         MyInput();
         SpeedControl();
