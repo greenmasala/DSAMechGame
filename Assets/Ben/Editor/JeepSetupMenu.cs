@@ -47,6 +47,20 @@ public static class JeepSetupMenu
     [MenuItem("Tools/Ben/Jeep Test Setup")]
     public static void CreateTestSetup()
     {
+        EnsureGroundAndTestPlayer();
+
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+        if (prefab == null) prefab = CreateJeepPrefab();
+
+        GameObject jeep = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+        jeep.transform.position = new Vector3(0f, 0f, -25f);
+        Undo.RegisterCreatedObjectUndo(jeep, "Jeep Test Setup");
+        Selection.activeGameObject = jeep;
+    }
+
+    // Adds a ground plane and a stand-in player, unless the scene already has them. Also used by TankSetupMenu.
+    public static void EnsureGroundAndTestPlayer()
+    {
         if (GameObject.Find("Ground") == null)
         {
             GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -68,14 +82,6 @@ public static class JeepSetupMenu
             so.ApplyModifiedPropertiesWithoutUndo();
             Undo.RegisterCreatedObjectUndo(player, "Jeep Test Setup");
         }
-
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
-        if (prefab == null) prefab = CreateJeepPrefab();
-
-        GameObject jeep = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-        jeep.transform.position = new Vector3(0f, 0f, -25f);
-        Undo.RegisterCreatedObjectUndo(jeep, "Jeep Test Setup");
-        Selection.activeGameObject = jeep;
     }
 
     private static void AddBox(Transform parent, string name, Vector3 position, Vector3 size)
