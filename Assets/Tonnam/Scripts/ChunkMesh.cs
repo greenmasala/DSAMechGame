@@ -1,4 +1,3 @@
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,9 +6,13 @@ public class ChunkMesh : MonoBehaviour
     [SerializeField] private MeshFilter meshFilter;
     [SerializeField] private MeshCollider meshCollider;
 
+    private MapChunk currentChunk;
+
     public void Set(MapChunk chunk)
     {
         var (vertices, triangles, uv) = chunk.GetMeshData();
+
+        currentChunk = chunk;
 
         Mesh mesh = new Mesh();
         meshFilter.sharedMesh = mesh;
@@ -18,6 +21,15 @@ public class ChunkMesh : MonoBehaviour
         meshFilter.sharedMesh.SetUVs(0, uv.ToVector2List());
         RecalculateMesh();
     }
+
+    public void Clear()
+    {
+        meshFilter.sharedMesh.Clear();
+        meshCollider.sharedMesh = null;
+        currentChunk = default;
+    }
+
+    public int2 GetChunkPosition() => currentChunk.ChunkPosition;
 
     private void RecalculateMesh()
     {

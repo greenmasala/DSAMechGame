@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour
 {
     public static event Action<IEnumerable<MapChunk>> OnChunkGenerated;
+    public static event Action<List<int2>> OnChunksUnloaded;
     public MapData Map => mapData;
 
     private Dictionary<int2, MapChunk> loadedChunks;
@@ -34,6 +37,12 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     [SerializeField] [OnValueChanged(nameof(GenerateMap))] private int renderChunks = 5;
 
+    /// <summary>
+    /// The point where the chunks generated around.
+    /// </summary>
+    [SerializeField] private Transform referencePoint;
+    [SerializeField] private bool useInspectorCameraAsReferencePoint;
+
 
     [Header("Noise Settings")]
     [SerializeField] [OnValueChanged(nameof(GenerateMap))] private float heightMult = 5;
@@ -44,6 +53,8 @@ public class MapGenerator : MonoBehaviour
 
     private MapData mapData;
     private FastNoiseLite noise;
+
+    private Vector3 lastReferencePointPosition;
     
     [Button]
     public void GenerateMap()
@@ -59,17 +70,7 @@ public class MapGenerator : MonoBehaviour
         noise.SetFractalType(FastNoiseLite.FractalType.None);
         noise.SetFrequency(frequency);
 
-        var chunksToCreate = new NativeArray<int2>(renderChunks * renderChunks, Allocator.Persistent);
-
-        for(int y = 0; y < renderChunks; y++)
-        {
-            for(int x = 0; x < renderChunks; x++)
-            {
-                Vector2Int chunkPosition = new Vector2Int(x, y);
-                int index = y * renderChunks + x;
-                chunksToCreate[index] = chunkPosition;
-            }
-        }
+        var chunksToCreate = new NativeArray<int2>(GetChunkPositionsAroundReferencePoint(), Allocator.Persistent);
 
         int verticesPerChunk = subdivide * subdivide * 4; // 4 vertices per quad
         int trisPerChunk = subdivide * subdivide * 6; // 6 indices per quad (2 triangles)
@@ -100,6 +101,7 @@ public class MapGenerator : MonoBehaviour
 
 
         // ----------- SLICE DATA AND CREATE MAPCHUNKS ---------------
+        List<MapChunk> newChunks = new List<MapChunk>();
         for(int i = 0; i < chunksToCreate.Length; i++)
         {
             MapChunk chunk = new MapChunk(chunksToCreate[i]);
@@ -116,14 +118,17 @@ public class MapGenerator : MonoBehaviour
             chunk.SetUVs(uv.Slice(startIndexU, endIndexU - startIndexU));
 
             loadedChunks.TryAdd(chunksToCreate[i], chunk);
+            newChunks.Add(chunk);
         }
-        OnChunkGenerated?.Invoke(loadedChunks.Values);
+        OnChunkGenerated?.Invoke(newChunks);
 
         // ----------- CLEANUP ---------------
         chunksToCreate.Dispose();
         vertices.Dispose();
         triangles.Dispose();
         uv.Dispose();
+
+        UnloadChunksOutsideRenderDistance();
     }
 
     private void OnEnable()
@@ -139,7 +144,97 @@ public class MapGenerator : MonoBehaviour
             {
                 chunk.Dispose();
             }
+            OnChunksUnloaded?.Invoke(loadedChunks.Keys.ToList());
             loadedChunks.Clear();
         }
+    }
+
+    private void Update()
+    {
+        if (useInspectorCameraAsReferencePoint)
+        {
+            referencePoint = UnityEditor.SceneView.lastActiveSceneView.camera.transform;
+        }
+
+        if (referencePoint == null) return;
+
+        if (Vector3.Distance(referencePoint.position, lastReferencePointPosition) > 0.1f)
+        {
+            GenerateMap();
+            lastReferencePointPosition = referencePoint.position;
+        }
+    }
+
+
+
+    private NativeArray<int2> GetChunkPositionsAroundReferencePoint()
+    {
+        void TryAddChunkPosition(int2 chunkPosition, ref NativeList<int2> chunkPositions)
+        {
+            if (!loadedChunks.ContainsKey(chunkPosition))
+            {
+                chunkPositions.Add(chunkPosition);
+            }
+        }
+
+        Vector3 referencePosition = referencePoint.position;
+        int2 referenceChunkPosition = MapHelper.WorldToChunkPosition(referencePosition, chunkSize);
+
+        int halfRenderChunks = Mathf.FloorToInt(renderChunks / 2f);
+        var chunkPositions = new NativeList<int2>(Allocator.Temp);
+
+        for (int y = -halfRenderChunks; y <= halfRenderChunks; y++)
+        {
+            for (int x = -halfRenderChunks; x <= halfRenderChunks; x++)
+            {
+                int2 chunkPosition = new int2(referenceChunkPosition.x + x, referenceChunkPosition.y + y);
+                TryAddChunkPosition(chunkPosition, ref chunkPositions);
+            }
+        }
+
+        return chunkPositions.AsArray();
+    }
+
+    private void UnloadChunksOutsideRenderDistance()
+    {
+        Vector3 referencePosition = referencePoint.position;
+        int2 referenceChunkPosition = new int2(
+            Mathf.FloorToInt(referencePosition.x / chunkSize),
+            Mathf.FloorToInt(referencePosition.z / chunkSize)
+        );
+
+        List<int2> chunksToUnload = new List<int2>();
+
+        foreach (var kvp in loadedChunks)
+        {
+            int2 chunkPosition = kvp.Key;
+            if (math.abs(chunkPosition.x - referenceChunkPosition.x) > renderChunks / 2 ||
+                math.abs(chunkPosition.y - referenceChunkPosition.y) > renderChunks / 2)
+            {
+                chunksToUnload.Add(chunkPosition);
+            }
+        }
+
+        foreach (var chunkPos in chunksToUnload)
+        {
+            if (loadedChunks.TryGetValue(chunkPos, out MapChunk chunk))
+            {
+                chunk.Dispose();
+                loadedChunks.Remove(chunkPos);
+            }
+        }
+
+        OnChunksUnloaded?.Invoke(chunksToUnload);
+    }
+}
+
+public static class MapHelper
+{
+    public static int2 WorldToChunkPosition(float3 worldPosition, int chunkSize)
+    {
+        return new int2(
+            Mathf.FloorToInt(worldPosition.x / chunkSize),
+            Mathf.FloorToInt(worldPosition.z / chunkSize)
+        );
     }
 }
