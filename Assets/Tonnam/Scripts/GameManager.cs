@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
         objectivesLeft = objectiveToDestroy;
-        mapGenerator.GenerateMap();
+        mapGenerator.Initialize(1337);
     }
 
     private void GameOver()

@@ -15,6 +15,7 @@ public class MapGenerator : MonoBehaviour
     public MapData Map => mapData;
 
     private Dictionary<int2, MapChunk> loadedChunks;
+    private int seed;
 
 
     [Header("Map Settings")]
@@ -55,14 +56,24 @@ public class MapGenerator : MonoBehaviour
     private FastNoiseLite noise;
 
     private Vector3 lastReferencePointPosition;
+    private bool isInitialized;
+
+    public void Initialize(int seed)
+    {
+        this.seed = seed;
+        isInitialized = true;
+        GenerateMap();
+    }
     
     [Button]
     public void GenerateMap()
     {
+        if (!isInitialized) return;
+
         // ----------- SETUP ---------------
         mapData = new MapData(chunkSize);
 
-        noise = new FastNoiseLite(seed: 1337);
+        noise = new FastNoiseLite(seed);
         noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
         noise.SetCellularDistanceFunction(distanceFunction);
         noise.SetCellularReturnType(returnType);
