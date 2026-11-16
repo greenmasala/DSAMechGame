@@ -25,7 +25,6 @@ public struct MapChunk : IDisposable
     public void SetVertices(NativeSlice<float3> newVertices)
     {
         if (vertices.IsCreated) vertices.Dispose();
-        Debug.Log($"Vertices: {newVertices.Length}");
         vertices = new NativeList<float3>(newVertices.Length, Allocator.Persistent);
         vertices.ResizeUninitialized(newVertices.Length);
         newVertices.CopyTo(vertices.AsArray());
@@ -46,7 +45,6 @@ public struct MapChunk : IDisposable
     public void SetTriangles(NativeSlice<int> newTriangles)
     {
         if (triangles.IsCreated) triangles.Dispose();
-        Debug.Log($"Triangles: {newTriangles.Length}");
         triangles = new NativeList<int>(newTriangles.Length, Allocator.Persistent);
         triangles.ResizeUninitialized(newTriangles.Length);
         newTriangles.CopyTo(triangles.AsArray());
@@ -61,7 +59,6 @@ public struct MapChunk : IDisposable
     public void SetUVs(NativeSlice<float2> newUVs)
     {
         if (uv.IsCreated) uv.Dispose();
-        Debug.Log($"UVs: {newUVs.Length}");
         uv = new NativeList<float2>(newUVs.Length, Allocator.Persistent);
         uv.ResizeUninitialized(newUVs.Length);
         newUVs.CopyTo(uv.AsArray());
@@ -74,7 +71,6 @@ public struct MapChunk : IDisposable
 
     public void Dispose()
     {
-        Debug.Log("Dispose");
         if (ObjectData.IsCreated) ObjectData.Dispose();
         if (vertices.IsCreated)   vertices.Dispose();
         if (triangles.IsCreated)  triangles.Dispose();
