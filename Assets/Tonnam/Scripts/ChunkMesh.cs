@@ -16,9 +16,9 @@ public class ChunkMesh : MonoBehaviour
 
         Mesh mesh = new Mesh();
         meshFilter.sharedMesh = mesh;
-        meshFilter.sharedMesh.SetVertices(vertices.ToVector3List());
-        meshFilter.sharedMesh.SetTriangles(triangles.ToIntList(), 0);
-        meshFilter.sharedMesh.SetUVs(0, uv.ToVector2List());
+        meshFilter.sharedMesh.SetVertices(vertices.AsArray());
+        meshFilter.sharedMesh.SetIndices(triangles.AsArray(), MeshTopology.Triangles, 0);
+        meshFilter.sharedMesh.SetUVs(0, uv.AsArray());
         RecalculateMesh();
     }
 
