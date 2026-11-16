@@ -8,4 +8,7 @@ public enum SoundType
     // [Ben] My Jeep sounds, they're silent until you put clips in the SoundDatabase
     Jeep_Beep,
     Jeep_Explode,
+    // [Ben] Tank and Turret shots, also silent until they have clips in the SoundDatabase
+    Tank_Fire,
+    Turret_Fire,
 }
