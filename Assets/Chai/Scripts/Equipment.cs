@@ -5,10 +5,12 @@ public class Equipment : MonoBehaviour
     public string Name;
     public float Damage;
     public int Ammo;
+    public float FireRate;
+    protected float nextFireTime;
     public float Range; //for raycasts
     public float Power; //for projectiles
     public bool CanShoot;
-    public bool SemiAuto;
+    public EquipmentInputType InputType;
     public Transform ShootPoint;
 
     private void Awake()
