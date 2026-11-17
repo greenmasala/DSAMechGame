@@ -40,7 +40,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _height: 0.1
+    - _fade: 0.26
+    - _height: 0
+    - _startFade: 0
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
