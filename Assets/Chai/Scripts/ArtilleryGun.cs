@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ArtilleryGun : Equipment
+public class ArtilleryGun : GunEquipment
 {
     public GameObject AmmoObj;
     

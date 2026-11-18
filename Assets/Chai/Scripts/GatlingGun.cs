@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GatlingGun : Equipment
+public class GatlingGun : GunEquipment
 {
     float spreadFactor = 2f;
     bool hasShot = false;
