@@ -20,8 +20,9 @@ public class RangedEnemy : Enemy
         if (player != null) playerCollider = player.GetComponent<Collider>();
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         if (player == null) return;
 
         if (IsPlayerInRange() && IsAimedAtPlayer() && Time.time >= nextFireTime)

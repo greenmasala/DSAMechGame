@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour
 {
+    public static MapGenerator Instance { get; private set; }
     public static event Action<IEnumerable<MapChunk>> OnChunkGenerated;
     public static event Action<List<int2>> OnChunksUnloaded;
     public MapData Map => mapData;
@@ -58,11 +59,28 @@ public class MapGenerator : MonoBehaviour
     private Vector3 lastReferencePointPosition;
     private bool isInitialized;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     public void Initialize(int seed)
     {
         this.seed = seed;
         isInitialized = true;
         GenerateMap();
+    }
+
+    public bool IsChunkLoaded(Vector3 worldPosition)
+    {
+        return loadedChunks.ContainsKey(MapHelper.WorldToChunkPosition(worldPosition, chunkSize));
     }
     
     [Button]
