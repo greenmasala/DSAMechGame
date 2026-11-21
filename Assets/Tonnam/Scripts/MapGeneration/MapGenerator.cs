@@ -74,6 +74,7 @@ public class MapGenerator : MonoBehaviour
     public void Initialize(int seed)
     {
         this.seed = seed;
+        UnityEngine.Random.InitState(seed);
         isInitialized = true;
         GenerateMap();
     }

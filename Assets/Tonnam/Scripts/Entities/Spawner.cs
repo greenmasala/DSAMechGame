@@ -1,4 +1,16 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public struct SpawnConfig
+{
+    public Spawner.SpawnType SpawnType;
+    public Vector3 Offset;
+    public float SpawnRadius;
+    public bool RandomizeRotation;
+    public Vector3 MinRotation;
+    public Vector3 MaxRotation;
+}
 
 public class Spawner : MonoBehaviour
 {
@@ -11,7 +23,7 @@ public class Spawner : MonoBehaviour
     public bool IsActive { get; private set; }
 
     [SerializeField] private GameObject[] prefabs;
-    [SerializeField] private SpawnType spawnType;
+    [SerializeField] private SpawnConfig config;
     [SerializeField] private float spawnRadius = 5f;
     [SerializeField] private bool activateOnStart = true;
 
@@ -51,7 +63,7 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        switch (spawnType)
+        switch (config.SpawnType)
         {
             case SpawnType.PickRandom:
                 SpawnRandom();
@@ -66,25 +78,36 @@ public class Spawner : MonoBehaviour
     {
         if (prefabs.Length == 0) return;
 
-        int randomIndex = Random.Range(0, prefabs.Length);
+        int randomIndex = UnityEngine.Random.Range(0, prefabs.Length);
         GameObject prefabToSpawn = prefabs[randomIndex];
 
-        Vector3 spawnPosition = GetSpawnPosition();
-        Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+        InternalSpawn(prefabToSpawn);
     }
 
     private void SpawnAll()
     {
         foreach (var prefab in prefabs)
         {
-            Vector3 spawnPosition = GetSpawnPosition();
-            Instantiate(prefab, spawnPosition, Quaternion.identity);
+            InternalSpawn(prefab);
         }
+    }
+
+    private void InternalSpawn(GameObject prefab)
+    {
+        Vector3 spawnPosition = GetSpawnPosition();
+        Vector3 spawnRotation = config.RandomizeRotation
+            ? new Vector3(
+                UnityEngine.Random.Range(config.MinRotation.x, config.MaxRotation.x),
+                UnityEngine.Random.Range(config.MinRotation.y, config.MaxRotation.y),
+                UnityEngine.Random.Range(config.MinRotation.z, config.MaxRotation.z))
+            : Vector3.zero;
+
+        Instantiate(prefab, spawnPosition, Quaternion.Euler(spawnRotation), transform);
     }
 
     private Vector3 GetSpawnPosition()
     {
-        Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
+        Vector3 spawnPosition = transform.position + UnityEngine.Random.insideUnitSphere * config.SpawnRadius;
         spawnPosition.y = startPositionY; // Set the y-coordinate to the start position
 
         Physics.Raycast(spawnPosition, Vector3.down, out RaycastHit hitInfo, raycastDistance);
@@ -94,6 +117,6 @@ public class Spawner : MonoBehaviour
             spawnPosition = hitInfo.point;
         }
 
-        return spawnPosition;
+        return spawnPosition + config.Offset;
     }
 }

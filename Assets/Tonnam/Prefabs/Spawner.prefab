@@ -49,7 +49,13 @@ MonoBehaviour:
   - {fileID: 208982942504296945, guid: 81fcf0fb1e704224fa5ed6174fd9acef, type: 3}
   - {fileID: 4333173967117124848, guid: 581f2bd0b9ad26943b7c4485c4aa4084, type: 3}
   - {fileID: 485595085312461162, guid: 4a6f22a681e3c514ba71a0001c290e29, type: 3}
-  spawnType: 1
+  config:
+    SpawnType: 0
+    Offset: {x: 0, y: 0, z: 0}
+    SpawnRadius: 5
+    RandomizeRotation: 0
+    MinRotation: {x: 0, y: 0, z: 0}
+    MaxRotation: {x: 0, y: 0, z: 0}
   spawnRadius: 5
   activateOnStart: 1
   startPositionY: 300
