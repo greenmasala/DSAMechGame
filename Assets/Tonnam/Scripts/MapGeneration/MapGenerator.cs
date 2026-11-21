@@ -82,6 +82,16 @@ public class MapGenerator : MonoBehaviour
     {
         return loadedChunks.ContainsKey(MapHelper.WorldToChunkPosition(worldPosition, chunkSize));
     }
+
+    public Vector3 GetRandomPositionInChunk(Vector2Int chunkPosition)
+    {
+        if (!loadedChunks.ContainsKey(chunkPosition))
+            return Vector3.zero;
+
+        float x = UnityEngine.Random.Range(chunkPosition.x * chunkSize, (chunkPosition.x + 1) * chunkSize);
+        float z = UnityEngine.Random.Range(chunkPosition.y * chunkSize, (chunkPosition.y + 1) * chunkSize);
+        return new Vector3(x, 0, z);
+    }
     
     [Button]
     public void GenerateMap()

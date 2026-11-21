@@ -1,44 +1,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopulationManager : MonoBehaviour
+public class StructureManager : MonoBehaviour
 {
     [SerializeField] protected string populationName;
-    [SerializeField] protected GameObject prefab;
+    [SerializeField] protected MapStructure prefab;
     [SerializeField] protected float densityPerChunk = 10;
 
-    protected List<GameObject> populations = new List<GameObject>();
+    protected List<MapStructure> populations = new List<MapStructure>();
 
     private void OnEnable()
     {
         GameManager.OnGameOver += ResetPopulation;
-        // MapGenerator.OnChunkGenerated += Populate;
+        MapGenerator.OnChunkGenerated += Populate;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameOver -= ResetPopulation;
-        // MapGenerator.OnChunkGenerated -= Populate;
+        MapGenerator.OnChunkGenerated -= Populate;
     }
 
-    public virtual void Populate(MapData mapData, MapChunk chunk)
+    public virtual void Populate(IEnumerable<MapChunk> chunks)
+    {
+        foreach (var chunk in chunks)
+        {
+            Populate(chunk);
+        }
+    }
+
+    public virtual void Populate(MapChunk chunk)
     {
         int toSpawn = GetNumberToSpawn();
         if (toSpawn <= 0) return;
 
         for (int i = 0; i < toSpawn; i++)
         {
-            Vector3 spawnPosition = mapData.GetRandomPositionInChunk(chunk.ChunkPosition);
+            Vector3 spawnPosition = MapGenerator.Instance.GetRandomPositionInChunk(chunk.ChunkPosition);
             if (spawnPosition != Vector3.zero)
             {
-                SpawnPopulation(mapData, chunk, spawnPosition);
+                SpawnPopulation(chunk, spawnPosition);
             }
         }
     }
 
-    protected virtual void SpawnPopulation(MapData mapData, MapChunk chunk, Vector3 position)
+    protected virtual void SpawnPopulation(MapChunk chunk, Vector3 position)
     {
-        GameObject newPopulation = Instantiate(prefab, position, Quaternion.identity, transform);
+        MapStructure newPopulation = Instantiate(prefab, position, Quaternion.identity, transform);
         populations.Add(newPopulation);
     } 
 
