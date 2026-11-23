@@ -24,7 +24,6 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private GameObject[] prefabs;
     [SerializeField] private SpawnConfig config;
-    [SerializeField] private float spawnRadius = 5f;
     [SerializeField] private bool activateOnStart = true;
 
     [SerializeField] private float startPositionY = 300f;

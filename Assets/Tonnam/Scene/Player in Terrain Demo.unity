@@ -412,6 +412,10 @@ PrefabInstance:
       propertyPath: referencePoint
       value: 
       objectReference: {fileID: 910299019}
+    - target: {fileID: 2110962162667544073, guid: d245e9b5614326a4fabcf43a7debe6e1, type: 3}
+      propertyPath: useInspectorCameraAsReferencePoint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5510799636153093857, guid: d245e9b5614326a4fabcf43a7debe6e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.11494
@@ -726,8 +730,8 @@ GameObject:
   m_Component:
   - component: {fileID: 987571294}
   - component: {fileID: 987571295}
-  - component: {fileID: 987571297}
-  - component: {fileID: 987571296}
+  - component: {fileID: 987571298}
+  - component: {fileID: 987571299}
   m_Layer: 0
   m_Name: === StructureManager
   m_TagString: Untagged
@@ -764,8 +768,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
   populationName: idk man
   prefab: {fileID: 5861349500665952433, guid: 7c694cd6d131d564ab4e23d5c313fa39, type: 3}
-  densityPerChunk: 0.3
---- !u!114 &987571296
+  densityPerChunk: 0.1
+--- !u!114 &987571298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -777,10 +781,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76830e68e72b2714a8dbd90d82f0968e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
-  populationName: tower 2
-  prefab: {fileID: 5136373807002817588, guid: 02d3bea80eedfe449b2032a2b7374899, type: 3}
-  densityPerChunk: 0.2
---- !u!114 &987571297
+  populationName: objective
+  prefab: {fileID: 4436229470363231576, guid: ec84f008d306d0142a0802bbbec1094e, type: 3}
+  densityPerChunk: 0.02
+--- !u!114 &987571299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -792,9 +796,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76830e68e72b2714a8dbd90d82f0968e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
-  populationName: tower
-  prefab: {fileID: 4517059166959722915, guid: 1c054a40fa5917f489927c6921885f52, type: 3}
-  densityPerChunk: 0.2
+  populationName: structure
+  prefab: {fileID: 71130071041952520, guid: 74bf8ba69b04b7d4ab1a2f530fb9e1b6, type: 3}
+  densityPerChunk: 0.05
 --- !u!1 &1020227950
 GameObject:
   m_ObjectHideFlags: 0

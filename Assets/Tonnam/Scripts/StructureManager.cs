@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class StructureManager : MonoBehaviour
@@ -12,39 +13,39 @@ public class StructureManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameOver += ResetPopulation;
-        MapGenerator.OnChunkGenerated += Populate;
+        MapGenerator.OnChunksFirstGenerated += Populate;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameOver -= ResetPopulation;
-        MapGenerator.OnChunkGenerated -= Populate;
+        MapGenerator.OnChunksFirstGenerated -= Populate;
     }
 
-    public virtual void Populate(IEnumerable<MapChunk> chunks)
+    public virtual void Populate(HashSet<int2> chunks)
     {
-        foreach (var chunk in chunks)
+        foreach (var chunkPos in chunks)
         {
-            Populate(chunk);
+            Populate(chunkPos);
         }
     }
 
-    public virtual void Populate(MapChunk chunk)
+    public virtual void Populate(int2 chunkPos)
     {
         int toSpawn = GetNumberToSpawn();
         if (toSpawn <= 0) return;
 
         for (int i = 0; i < toSpawn; i++)
         {
-            Vector3 spawnPosition = MapGenerator.Instance.GetRandomPositionInChunk(chunk.ChunkPosition);
+            Vector3 spawnPosition = MapGenerator.Instance.GetRandomPositionInChunk(chunkPos);
             if (spawnPosition != Vector3.zero)
             {
-                SpawnPopulation(chunk, spawnPosition);
+                SpawnPopulation(spawnPosition);
             }
         }
     }
 
-    protected virtual void SpawnPopulation(MapChunk chunk, Vector3 position)
+    protected virtual void SpawnPopulation(Vector3 position)
     {
         MapStructure newPopulation = Instantiate(prefab, position, Quaternion.identity, transform);
         populations.Add(newPopulation);
@@ -66,7 +67,7 @@ public class StructureManager : MonoBehaviour
         int integerDensity = Mathf.FloorToInt(densityPerChunk);
         float fractionalDensity = densityPerChunk - integerDensity;
 
-        int additionalSpawn = Random.value < fractionalDensity ? 1 : 0;
+        int additionalSpawn = UnityEngine.Random.value < fractionalDensity ? 1 : 0;
 
         return integerDensity + additionalSpawn;
     }

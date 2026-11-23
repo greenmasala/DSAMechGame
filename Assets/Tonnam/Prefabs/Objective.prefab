@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7349042988021180661}
   - component: {fileID: 2000028111843804424}
   - component: {fileID: 1590673941657822194}
+  - component: {fileID: 6415269661291324151}
+  - component: {fileID: 5464996982927885380}
   m_Layer: 0
   m_Name: Objective
   m_TagString: Untagged
@@ -125,3 +127,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a6987c804034b4280503fac967e269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Objective
+--- !u!114 &6415269661291324151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556435112006314053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef210ed213706184b9cfdd56a3669859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapStructure
+  model: {fileID: 0}
+--- !u!114 &5464996982927885380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556435112006314053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd64c414c0824f04a8762b4a686468b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Entity
+  hp: 20
+  moveSpeed: 0
+  model: {fileID: 0}
