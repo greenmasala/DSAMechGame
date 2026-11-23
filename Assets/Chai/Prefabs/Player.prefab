@@ -60,12 +60,12 @@ MonoBehaviour:
   airMultiplier: 0.4
   dashTime: 0.25
   dashSpeed: 5
-  dashForce: 2
+  dashForce: 5
   jumpKey: 32
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65
   Grounded: 0
   orientation: {fileID: 5076514399659141757}
 --- !u!114 &236084150692677630
@@ -113,7 +113,7 @@ Rigidbody:
   m_GameObject: {fileID: 419335191516992682}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}

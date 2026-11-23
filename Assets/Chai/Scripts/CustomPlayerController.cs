@@ -74,11 +74,13 @@ public class CustomPlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && stamina.HasStamina(.3f) && Grounded)
         {
             MoveSpeed = SprintSpeed;
+            PlayerCamera.Instance.IsSprinting = true;
             stamina.UpdateStamina(.3f * Time.deltaTime);
         }
         else
         {
             MoveSpeed = WalkSpeed;
+            PlayerCamera.Instance.IsSprinting = false;
         }
 
         // when to jump
@@ -104,6 +106,7 @@ public class CustomPlayerController : MonoBehaviour
     {
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //CameraShake.CameraTilt(moveDirection.z);
 
         // on ground
         if (Grounded)
@@ -133,10 +136,13 @@ public class CustomPlayerController : MonoBehaviour
         stamina.UpdateStamina(10f);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        CameraShake.Shake(0.5f, 0.5f);
     }
 
     void Dash()
     {
+        PlayerCamera.Instance.StartDashTilt();
+        CameraShake.Shake(0.5f, 0.5f);
         StartCoroutine(DashCoroutine());
         stamina.UpdateStamina(20f);
     }
@@ -147,8 +153,9 @@ public class CustomPlayerController : MonoBehaviour
         while (Time.time < startTime + dashTime)
         {
             rb.AddForce(moveDirection * dashForce, ForceMode.Impulse);
-
             yield return null;
         }
+
+        PlayerCamera.Instance.StopDashTilt();
     }
 }
