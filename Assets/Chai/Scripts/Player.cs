@@ -9,6 +9,17 @@ public class Player : Entity
     public TextMeshProUGUI[] EquipmentAmmo;
     public TextMeshProUGUI HealthText;
 
+    // [Ben] Chai, my ShieldEquipment sets this (0.75 = take 25% damage) while the shield is held up
+    [HideInInspector] public float DamageReduction;
+
+    public override void TakeDamage(float damage)
+    {
+        if (DamageReduction > 0f)
+            Debug.Log($"[Shield] Blocked {damage * DamageReduction:F0} of {damage:F0} damage");
+
+        base.TakeDamage(damage * (1f - DamageReduction));
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
