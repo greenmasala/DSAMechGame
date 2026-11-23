@@ -17,14 +17,9 @@ public class Enemy : Entity
 
     // [Ben] If nobody called Initialize() it finds the Player by itself, so enemies still work in test scenes
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         if (player == null) player = FindAnyObjectByType<Player>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

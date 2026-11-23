@@ -27,13 +27,13 @@ public class ChunkRenderer : MonoBehaviour
 
     private void OnEnable()
     {
-        MapGenerator.OnChunkGenerated += HandleChunkGenerated;
+        MapGenerator.OnChunksLoaded += HandleChunkGenerated;
         MapGenerator.OnChunksUnloaded += HandleChunksUnloaded;
     }
 
     private void OnDisable()
     {
-        MapGenerator.OnChunkGenerated -= HandleChunkGenerated;
+        MapGenerator.OnChunksLoaded -= HandleChunkGenerated;
         MapGenerator.OnChunksUnloaded -= HandleChunksUnloaded;
     }
 

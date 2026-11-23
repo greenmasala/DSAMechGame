@@ -69,6 +69,15 @@ public struct MapChunk : IDisposable
         return (vertices, triangles, uv);
     }
 
+    public float3 GetVertexAt(int index)
+    {
+        if (index < 0 || index >= vertices.Length)
+        {
+            throw new IndexOutOfRangeException($"Index {index} is out of range for vertices array of length {vertices.Length}.");
+        }
+        return vertices[index];
+    }
+
     public void Dispose()
     {
         if (ObjectData.IsCreated) ObjectData.Dispose();
