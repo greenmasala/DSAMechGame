@@ -82,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   hp: 1000
   moveSpeed: 0
+  model: {fileID: 0}
   Weapons:
   - {fileID: 0}
   - {fileID: 0}

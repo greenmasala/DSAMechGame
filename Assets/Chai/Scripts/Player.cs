@@ -37,7 +37,7 @@ public class Player : Entity
 
     private void UpdateHealth(float hp)
     {
-        HealthText.text = hp.ToString("F2");
+        HealthText.text = hp.ToString("F0");
     }
 
     public void UseEquipment(int index, KeyCode key)

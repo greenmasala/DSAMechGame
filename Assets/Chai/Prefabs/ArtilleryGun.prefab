@@ -169,13 +169,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArtilleryGun
   Name: ArtilleryGun
   Ammo: 10
+  IsUsing: 0
   InputType: 0
   ShootPoint: {fileID: 1258329164568432511}
   GunModel: {fileID: 1227315801949379676}
+  MuzzleFlash: {fileID: 0}
   Damage: 20
   FireRate: 0
   Range: 0
   Power: 100
   CanShoot: 0
+  Trail: {fileID: 0}
+  ImpactVFX: {fileID: 0}
   RecoilAmount: 0
   AmmoObj: {fileID: 5108778016826953385, guid: 35f1ab074d5fca145b267d45cf7d3b57, type: 3}
