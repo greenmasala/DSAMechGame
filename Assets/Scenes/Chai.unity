@@ -246,17 +246,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!114 &440241374 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3817381151207074095, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
-  m_PrefabInstance: {fileID: 550432167}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2474e53eed8b0bd4f8cc76c38b50270b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GatlingGun
 --- !u!1001 &550432167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,24 +310,23 @@ PrefabInstance:
       propertyPath: Mover
       value: 
       objectReference: {fileID: 1491488113}
-    - target: {fileID: 8656392689106473975, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 8656392689106473975, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.31
-      objectReference: {fileID: 0}
-    - target: {fileID: 8656392689106473975, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.81
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3812931609219035982, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+    m_RemovedComponents:
+    - {fileID: 345958025370769326, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+--- !u!114 &609233531 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4822135127285650455, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+  m_PrefabInstance: {fileID: 550432167}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2474e53eed8b0bd4f8cc76c38b50270b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GatlingGun
 --- !u!114 &674415209 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4689961347571167742, guid: 64300ae67ddea75438bb5f34f19aa3b5, type: 3}
@@ -361,6 +349,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &969942403 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7254267708030958508, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+  m_PrefabInstance: {fileID: 550432167}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f3e9603fcbb754fa8f3fc11ecaa5e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArtilleryGun
 --- !u!4 &981454428 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2959966754619729929, guid: 1a7150340291f3141b2581904d57cd70, type: 3}
@@ -489,8 +488,8 @@ Transform:
   m_GameObject: {fileID: 1500973500}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.983, y: 0, z: -10.06612}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.0891, y: 0, z: 14.0671}
+  m_LocalScale: {x: 4.97992, y: 1, z: 9.010632}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -506,17 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &1777935222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1874559926473217830, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
-  m_PrefabInstance: {fileID: 550432167}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09f3e9603fcbb754fa8f3fc11ecaa5e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ArtilleryGun
 --- !u!1001 &1952354033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -629,11 +617,11 @@ PrefabInstance:
     - target: {fileID: 236084150692677630, guid: 1a7150340291f3141b2581904d57cd70, type: 3}
       propertyPath: 'Weapons.Array.data[0]'
       value: 
-      objectReference: {fileID: 1777935222}
+      objectReference: {fileID: 969942403}
     - target: {fileID: 236084150692677630, guid: 1a7150340291f3141b2581904d57cd70, type: 3}
       propertyPath: 'Weapons.Array.data[1]'
       value: 
-      objectReference: {fileID: 440241374}
+      objectReference: {fileID: 609233531}
     - target: {fileID: 236084150692677630, guid: 1a7150340291f3141b2581904d57cd70, type: 3}
       propertyPath: 'EquipmentAmmo.Array.data[0]'
       value: 
@@ -712,6 +700,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 310479324}
   - {fileID: 1500973504}
-  - {fileID: 550432167}
   - {fileID: 2016403563}
   - {fileID: 1952354033}
+  - {fileID: 550432167}

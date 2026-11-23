@@ -60,12 +60,12 @@ MonoBehaviour:
   airMultiplier: 0.4
   dashTime: 0.25
   dashSpeed: 5
-  dashForce: 2
+  dashForce: 5
   jumpKey: 32
   playerHeight: 2
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65
   Grounded: 0
   orientation: {fileID: 5076514399659141757}
 --- !u!114 &236084150692677630
@@ -129,7 +129,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!136 &5485595898400101834
 CapsuleCollider:
@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8606366576325700591
 Transform:
   m_ObjectHideFlags: 0

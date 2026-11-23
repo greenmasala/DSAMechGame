@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
@@ -45,31 +46,28 @@ public class Player : Entity
         {
             case EquipmentInputType.Click:
 
-                if (Input.GetKeyDown(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
-
+                InputReceiver(Input.GetKeyDown(key), index);
                 break;
 
             case EquipmentInputType.Hold:
 
-                if (Input.GetKey(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
+                InputReceiver(Input.GetKey(key), index);
+                //if (Input.GetKey(key))
+                //{
+                //    Weapons[index].OnUse(this);
+                //    UpdateText(index);
+                //}
 
                 break;
 
             case EquipmentInputType.Release:
 
-                if (Input.GetKey(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
+                InputReceiver(Input.GetKeyUp(key), index);
+                //if (Input.GetKey(key))
+                //{
+                //    Weapons[index].OnUse(this);
+                //    UpdateText(index);
+                //}
 
                 break;
         }
@@ -83,5 +81,21 @@ public class Player : Entity
     public void UpdateHealthText()
     {
         HealthText.text = hp.ToString();
+    }
+
+    void InputReceiver(bool input, int index)
+    {
+        if (input)
+        {
+            Weapons[index].OnUse(this);
+            Weapons[index].IsUsing = true;
+            UpdateText(index);
+        }
+        else if (Weapons[index].IsUsing)
+        {
+            Weapons[index].IsUsing = false;
+        
+            Weapons[index].gameObject.GetComponent<GunEquipment>().MuzzleFlashController(false);
+        }
     }
 }
