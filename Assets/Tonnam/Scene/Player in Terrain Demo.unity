@@ -766,9 +766,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76830e68e72b2714a8dbd90d82f0968e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
-  populationName: idk man
+  populationName: enemy
   prefab: {fileID: 5861349500665952433, guid: 7c694cd6d131d564ab4e23d5c313fa39, type: 3}
-  densityPerChunk: 0.1
+  densityPerChunk: 0.3
 --- !u!114 &987571298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,7 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
   populationName: objective
   prefab: {fileID: 4436229470363231576, guid: ec84f008d306d0142a0802bbbec1094e, type: 3}
-  densityPerChunk: 0.02
+  densityPerChunk: 0.03
 --- !u!114 &987571299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StructureManager
   populationName: structure
   prefab: {fileID: 71130071041952520, guid: 74bf8ba69b04b7d4ab1a2f530fb9e1b6, type: 3}
-  densityPerChunk: 0.05
+  densityPerChunk: 0.08
 --- !u!1 &1020227950
 GameObject:
   m_ObjectHideFlags: 0

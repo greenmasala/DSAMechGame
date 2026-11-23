@@ -191,7 +191,7 @@ public class Jeep : Enemy
     }
 
     // Shot to death -> blow up instead of just disappearing.
-    public override void OnDead()
+    protected override void OnDead()
     {
         Explode();
     }

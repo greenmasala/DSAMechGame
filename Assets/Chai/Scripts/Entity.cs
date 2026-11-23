@@ -34,7 +34,7 @@ public class Entity : MonoBehaviour
     }
 
     // [Ben] Made this virtual so my Jeep can blow up when it dies instead of just disappearing
-    public virtual void OnDead()
+    protected virtual void OnDead()
     {
         if (!isActive) return;
 
