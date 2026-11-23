@@ -10,11 +10,14 @@ using UnityEngine.Rendering;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static event Action<IEnumerable<MapChunk>> OnChunkGenerated;
+    public static MapGenerator Instance { get; private set; }
+    public static event Action<IEnumerable<MapChunk>> OnChunksLoaded;
     public static event Action<List<int2>> OnChunksUnloaded;
+    public static event Action<HashSet<int2>> OnChunksFirstGenerated;
     public MapData Map => mapData;
 
     private Dictionary<int2, MapChunk> loadedChunks;
+    private HashSet<int2> generatedChunks;
     private int seed;
 
 
@@ -58,11 +61,40 @@ public class MapGenerator : MonoBehaviour
     private Vector3 lastReferencePointPosition;
     private bool isInitialized;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     public void Initialize(int seed)
     {
         this.seed = seed;
+        UnityEngine.Random.InitState(seed);
         isInitialized = true;
+        generatedChunks = new HashSet<int2>();
         GenerateMap();
+    }
+
+    public bool IsChunkLoaded(Vector3 worldPosition)
+    {
+        return loadedChunks.ContainsKey(MapHelper.WorldToChunkPosition(worldPosition, chunkSize));
+    }
+
+    public Vector3 GetRandomPositionInChunk(Vector2Int chunkPosition)
+    {
+        if (!loadedChunks.ContainsKey(chunkPosition))
+            return Vector3.zero;
+
+        float x = UnityEngine.Random.Range(chunkPosition.x * chunkSize, (chunkPosition.x + 1) * chunkSize);
+        float z = UnityEngine.Random.Range(chunkPosition.y * chunkSize, (chunkPosition.y + 1) * chunkSize);
+        return new Vector3(x, 0, z);
     }
     
     [Button]
@@ -113,6 +145,7 @@ public class MapGenerator : MonoBehaviour
 
         // ----------- SLICE DATA AND CREATE MAPCHUNKS ---------------
         List<MapChunk> newChunks = new List<MapChunk>();
+        HashSet<int2> newGeneratedChunks = new HashSet<int2>();
         for(int i = 0; i < chunksToCreate.Length; i++)
         {
             MapChunk chunk = new MapChunk(chunksToCreate[i]);
@@ -130,8 +163,17 @@ public class MapGenerator : MonoBehaviour
 
             loadedChunks.TryAdd(chunksToCreate[i], chunk);
             newChunks.Add(chunk);
+
+            newGeneratedChunks.Add(chunksToCreate[i]);
         }
-        OnChunkGenerated?.Invoke(newChunks);
+
+        OnChunksLoaded?.Invoke(newChunks);
+        if(newGeneratedChunks.Count != generatedChunks.Count)
+        {
+            var difference = newGeneratedChunks.Except(generatedChunks).ToHashSet();
+            OnChunksFirstGenerated?.Invoke(difference);
+            generatedChunks.UnionWith(difference);
+        }
 
         // ----------- CLEANUP ---------------
         chunksToCreate.Dispose();
