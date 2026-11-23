@@ -1,11 +1,18 @@
 using UnityEngine;
 
-public class Objective : MonoBehaviour
+public class Objective : Entity
 {
     [ContextMenu("Destroy Objective")]
     private void DestroySelf()
     {
-        GameManager.Instance.ObjectiveDestroyed();
-        Destroy(gameObject);
+        TakeDamage(hp);
+    }
+
+    protected override void OnDead()
+    {
+        if (!isActive) return;
+
+        // GameManager.Instance.ObjectiveDestroyed();
+        base.OnDead();
     }
 }

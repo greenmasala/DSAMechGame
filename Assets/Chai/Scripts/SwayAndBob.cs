@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SwayAndBob : MonoBehaviour
 {
-    public PlayerController Mover;
+    public CustomPlayerController Mover;
     //Transform weaponHolderRoot;
     //public Vector3 cameraRoot;
     //float speed = 0.1f;

@@ -44,6 +44,8 @@ public class Tank : RangedEnemy
 
     protected override void Update()
     {
+        if (!isActive) return;
+
         if (player != null)
         {
             UpdateAimTarget();
@@ -162,5 +164,17 @@ public class Tank : RangedEnemy
     {
         float burst = Mathf.SmoothStep(0f, 1f, (Noise(channel, rate) - 0.3f) / 0.4f);
         return Mathf.Lerp(1f, burst, jank);
+    }
+
+    protected override void OnUnloaded()
+    {
+        base.OnUnloaded();
+        rb.isKinematic = true;
+    }
+
+    protected override void OnLoaded()
+    {
+        base.OnLoaded();
+        rb.isKinematic = false;
     }
 }
