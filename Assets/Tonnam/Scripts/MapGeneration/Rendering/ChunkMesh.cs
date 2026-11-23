@@ -8,14 +8,11 @@ public class ChunkMesh : MonoBehaviour
 
     private MapChunk currentChunk;
 
-    private float3 firstVertex;
-
     public void Set(MapChunk chunk)
     {
         var (vertices, triangles, uv) = chunk.GetMeshData();
 
         currentChunk = chunk;
-        firstVertex = vertices[0];
 
         Mesh mesh = new Mesh();
         meshFilter.sharedMesh = mesh;
@@ -38,10 +35,5 @@ public class ChunkMesh : MonoBehaviour
     {
         meshFilter.sharedMesh.RecalculateNormals();
         meshCollider.sharedMesh = meshFilter.sharedMesh;
-    }
-
-    private void Update()
-    {
-        Debug.DrawRay(firstVertex, Vector3.up * 100f, Color.green, 0.1f);
     }
 }

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MapGenerator mapGenerator;
     [SerializeField] private int objectiveToDestroy = 10;
 
+    private MapData map => mapGenerator.Map;
     private int objectivesLeft;
     private bool isGameOver;
 
@@ -61,6 +62,6 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         OnGameOver?.Invoke();
-        // GameStart();
+        GameStart();
     }
 }

@@ -126,7 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc70b1ac3308b347b1d258955ef4f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtilleryAmmo
-  BulletDamage: 20
 --- !u!54 &3730414620210896784
 Rigidbody:
   m_ObjectHideFlags: 0

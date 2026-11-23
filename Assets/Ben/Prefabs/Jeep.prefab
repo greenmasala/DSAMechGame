@@ -97,7 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Jeep
   hp: 30
   moveSpeed: 12
-  model: {fileID: 5706880389427589430}
   player: {fileID: 0}
   attackingRange: 4
   damage: 40

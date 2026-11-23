@@ -72,10 +72,8 @@ public class Jeep : Enemy
         }
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-
         if (state == State.Chase && player != null && FlatDistanceToPlayer() <= attackingRange)
         {
             Arm();
@@ -89,8 +87,6 @@ public class Jeep : Enemy
 
     private void FixedUpdate()
     {
-        if (!isActive) return;
-
         if (state == State.Chase && player != null)
         {
             DriveTowardPlayer();
@@ -191,7 +187,7 @@ public class Jeep : Enemy
     }
 
     // Shot to death -> blow up instead of just disappearing.
-    protected override void OnDead()
+    public override void OnDead()
     {
         Explode();
     }
@@ -210,17 +206,5 @@ public class Jeep : Enemy
         Gizmos.DrawWireSphere(transform.position, attackingRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explodeDistance);
-    }
-
-    protected override void OnUnloaded()
-    {
-        base.OnUnloaded();
-        rb.isKinematic = true;
-    }
-
-    protected override void OnLoaded()
-    {
-        base.OnLoaded();
-        rb.isKinematic = false;
     }
 }

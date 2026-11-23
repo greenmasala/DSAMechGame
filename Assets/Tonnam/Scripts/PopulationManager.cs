@@ -1,53 +1,44 @@
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
-public class StructureManager : MonoBehaviour
+public class PopulationManager : MonoBehaviour
 {
     [SerializeField] protected string populationName;
-    [SerializeField] protected MapStructure prefab;
+    [SerializeField] protected GameObject prefab;
     [SerializeField] protected float densityPerChunk = 10;
 
-    protected List<MapStructure> populations = new List<MapStructure>();
+    protected List<GameObject> populations = new List<GameObject>();
 
     private void OnEnable()
     {
         GameManager.OnGameOver += ResetPopulation;
-        MapGenerator.OnChunksFirstGenerated += Populate;
+        // MapGenerator.OnChunkGenerated += Populate;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameOver -= ResetPopulation;
-        MapGenerator.OnChunksFirstGenerated -= Populate;
+        // MapGenerator.OnChunkGenerated -= Populate;
     }
 
-    public virtual void Populate(HashSet<int2> chunks)
-    {
-        foreach (var chunkPos in chunks)
-        {
-            Populate(chunkPos);
-        }
-    }
-
-    public virtual void Populate(int2 chunkPos)
+    public virtual void Populate(MapData mapData, MapChunk chunk)
     {
         int toSpawn = GetNumberToSpawn();
         if (toSpawn <= 0) return;
 
         for (int i = 0; i < toSpawn; i++)
         {
-            Vector3 spawnPosition = MapGenerator.Instance.GetRandomPositionInChunk(chunkPos);
+            Vector3 spawnPosition = mapData.GetRandomPositionInChunk(chunk.ChunkPosition);
             if (spawnPosition != Vector3.zero)
             {
-                SpawnPopulation(spawnPosition);
+                SpawnPopulation(mapData, chunk, spawnPosition);
             }
         }
     }
 
-    protected virtual void SpawnPopulation(Vector3 position)
+    protected virtual void SpawnPopulation(MapData mapData, MapChunk chunk, Vector3 position)
     {
-        MapStructure newPopulation = Instantiate(prefab, position, Quaternion.identity, transform);
+        GameObject newPopulation = Instantiate(prefab, position, Quaternion.identity, transform);
         populations.Add(newPopulation);
     } 
 
@@ -67,7 +58,7 @@ public class StructureManager : MonoBehaviour
         int integerDensity = Mathf.FloorToInt(densityPerChunk);
         float fractionalDensity = densityPerChunk - integerDensity;
 
-        int additionalSpawn = UnityEngine.Random.value < fractionalDensity ? 1 : 0;
+        int additionalSpawn = Random.value < fractionalDensity ? 1 : 0;
 
         return integerDensity + additionalSpawn;
     }

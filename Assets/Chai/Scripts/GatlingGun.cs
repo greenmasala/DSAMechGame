@@ -1,8 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class GatlingGun : GunEquipment
+public class GatlingGun : Equipment
 {
     float spreadFactor = 2f;
     bool hasShot = false;
@@ -10,31 +8,15 @@ public class GatlingGun : GunEquipment
 
     public override void OnUse(Player player)
     {
-        if (Ammo > 0)
-        {
-           Shoot();
-        }
+        Shoot();
     }
 
     // Update is called once per frame
-    void Shoot()    
+    void Shoot()
     {
-        if (Time.time < nextFireTime)
-        {
-            return;
-        }
-
-        Ammo--;
-        nextFireTime = Time.time + FireRate;
         RaycastHit hit;
 
         Debug.DrawRay(ShootPoint.position, ShootPoint.forward * Range, Color.red, 0.5f);
-        Debug.Log($"nextFireTime: {nextFireTime} Time.time: {Time.time}");
-
-        if (Time.time >= nextFireTime)
-        {
-            CanShoot = true;
-        }
 
         if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, Range))
         {

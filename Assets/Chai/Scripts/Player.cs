@@ -1,13 +1,11 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
+// [Ben] Chai, I changed this to Entity like the class diagram so my Jeep can damage the player
+// [Ben] Don't forget to set Hp in the Inspector, it's 0 by default so you die in one hit lol
 public class Player : Entity
 {
     public Equipment[] Weapons;
-    public TextMeshProUGUI[] EquipmentAmmo;
-    public TextMeshProUGUI HealthText;
+    float energy;
 
     // [Ben] Chai, my ShieldEquipment sets this (0.75 = take 25% damage) while the shield is held up
     [HideInInspector] public float DamageReduction;
@@ -23,76 +21,21 @@ public class Player : Entity
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        UpdateText(0);
-        UpdateText(1);
-        UpdateHealthText();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        UseEquipment(0, KeyCode.Mouse0);
-        UseEquipment(1, KeyCode.Mouse1);
-    }
-
-    private void OnEnable()
-    {
-        OnHealthChanged += UpdateHealth;
-    }
-
-    private void OnDisable()
-    {
-        OnHealthChanged -= UpdateHealth;
-    }
-
-    private void UpdateHealth(float hp)
-    {
-        HealthText.text = hp.ToString("F2");
-    }
-
-    public void UseEquipment(int index, KeyCode key)
-    {
-        switch (Weapons[index].InputType)
+        // [Ben] Added the Weapons.Length check to prevent a crash (it crashed my scene, my test player has no weapons)
+        if (Input.GetMouseButtonDown(0) && Weapons.Length > 0)
         {
-            case EquipmentInputType.Click:
-
-                if (Input.GetKeyDown(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
-
-                break;
-
-            case EquipmentInputType.Hold:
-
-                if (Input.GetKey(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
-
-                break;
-
-            case EquipmentInputType.Release:
-
-                if (Input.GetKey(key))
-                {
-                    Weapons[index].OnUse(this);
-                    UpdateText(index);
-                }
-
-                break;
+            Weapons[0].OnUse(this);
         }
-    }
 
-    public void UpdateText(int index)
-    {
-        EquipmentAmmo[index].text = Weapons[index].Ammo.ToString();
-    }
-
-    public void UpdateHealthText()
-    {
-        HealthText.text = hp.ToString();
+        if (Input.GetMouseButtonDown(1) && Weapons.Length > 1)
+        {
+            Weapons[1].OnUse(this);
+        }
     }
 }

@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class ArtilleryGun : GunEquipment
+public class ArtilleryGun : Equipment
 {
     public GameObject AmmoObj;
-    
+
     public override void OnUse(Player player)
     {
-        if (CanShoot & Ammo > 0)
+        if (CanShoot)
         {
             StartCoroutine(ShootWithDelay());
         }
@@ -15,7 +15,6 @@ public class ArtilleryGun : GunEquipment
 
     IEnumerator ShootWithDelay()
     {
-        Ammo--;
         CanShoot = false;
         var ammoObj = Instantiate(AmmoObj, ShootPoint.position, ShootPoint.rotation);
         ammoObj.GetComponent<ArtilleryAmmo>().BulletDamage = Damage;
