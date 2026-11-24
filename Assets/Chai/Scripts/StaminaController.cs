@@ -56,7 +56,7 @@ public class StaminaController : MonoBehaviour
 
     void UpdateStaminaText(float energyAmount)
     {
-        StaminaText.text = energyAmount.ToString("F2");
+        StaminaText.text = energyAmount.ToString("F0");
     }
 
     public bool HasStamina(float energy)

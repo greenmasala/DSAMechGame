@@ -36,14 +36,26 @@ public class GatlingGun : GunEquipment
             CanShoot = true;
         }
 
+        Recoil();
+        //OnShake(.2f, .05f);
+        CameraShake.Shake(.25f, .2f);
+
         if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, Range))
         {
+            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+
             if (hit.collider.GetComponent<Entity>())
             {
                 var hitActor = hit.collider.GetComponent<Entity>();
                 Debug.Log("Hit: " + hit.transform.name);
                 hitActor.TakeDamage(25);
             }
+        }
+        else
+        {
+            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, ShootPoint.position + ShootPoint.forward * Range, Vector3.zero, false));
         }
     }
 }

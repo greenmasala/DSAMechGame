@@ -9,6 +9,9 @@ public class ArtilleryGun : GunEquipment
     {
         if (CanShoot & Ammo > 0)
         {
+            //OnShake(.35f, .5f);
+            Recoil();
+            CameraShake.Shake(.35f, 1.5f);
             StartCoroutine(ShootWithDelay());
         }
     }
@@ -18,7 +21,7 @@ public class ArtilleryGun : GunEquipment
         Ammo--;
         CanShoot = false;
         var ammoObj = Instantiate(AmmoObj, ShootPoint.position, ShootPoint.rotation);
-        ammoObj.GetComponent<ArtilleryAmmo>().BulletDamage = Damage;
+        ammoObj.GetComponent<ArtilleryAmmo>().Damage = Damage;
         ammoObj.GetComponent<Rigidbody>().linearVelocity = ShootPoint.transform.up * Power;
 
         yield return new WaitForSeconds(1.5f);
