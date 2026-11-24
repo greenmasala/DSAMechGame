@@ -22,7 +22,8 @@ public class Entity : MonoBehaviour
         EntityManager.Instance.Register(this);
     }
 
-    public void TakeDamage(float damage)
+    // [Ben] Made this virtual so Player can cut damage while my ShieldEquipment is up
+    public virtual void TakeDamage(float damage)
     {
         if (!isActive) return;
 
