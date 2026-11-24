@@ -1,10 +1,7 @@
 using StarterAssets;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using static UnityEngine.EventSystems.EventTrigger;
 
 //[RequireComponent(typeof(CharacterController))]
 #if ENABLE_INPUT_SYSTEM
