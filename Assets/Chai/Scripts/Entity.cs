@@ -50,13 +50,16 @@ public class Entity : MonoBehaviour
 
     protected virtual void LateUpdate()
     {
-        if (MapGenerator.Instance.IsChunkLoaded(transform.position))
+        if (MapGenerator.Instance != null)
         {
-            if (!isActive) OnLoaded();
-        }
-        else
-        {
-            if (isActive) OnUnloaded();
+            if (MapGenerator.Instance.IsChunkLoaded(transform.position))
+            {
+                if (!isActive) OnLoaded();
+            }
+            else
+            {
+                if (isActive) OnUnloaded();
+            }
         }
     }
 

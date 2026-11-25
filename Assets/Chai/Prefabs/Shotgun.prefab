@@ -135,14 +135,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6110e2bc06638fc40871d90c42416cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shotgun
-  Name: 
+  Name: Shotgun
   Ammo: 0
+  IsUsing: 0
   InputType: 0
   ShootPoint: {fileID: 0}
+  GunModel: {fileID: 0}
+  MuzzleFlash: {fileID: 0}
   Damage: 0
   FireRate: 0
   Range: 0
   Power: 0
   CanShoot: 0
+  Trail: {fileID: 0}
+  ImpactVFX: {fileID: 0}
+  RecoilAmount: 0
   Pellets: 8
   SpreadAngle: 8
+  LogToConsole: 1
