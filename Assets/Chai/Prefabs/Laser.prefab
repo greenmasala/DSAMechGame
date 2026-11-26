@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserGun
   Name: LaserGun
+  Description: Powerful long range weapon using the mech's energy reserves.
+  Icon: {fileID: 0}
   Ammo: 0
   IsUsing: 0
   InputType: 0

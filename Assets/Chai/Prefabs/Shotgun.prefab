@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shotgun
   Name: Shotgun
+  Description: Powerful close range option.
+  Icon: {fileID: 0}
   Ammo: 0
   IsUsing: 0
   InputType: 0
@@ -147,7 +149,7 @@ MonoBehaviour:
   Range: 0
   Power: 0
   CanShoot: 0
-  Trail: {fileID: 0}
+  Trail: {fileID: 3032061375972148744, guid: 29e5815e75aa2da48ade1180104d1158, type: 3}
   ImpactVFX: {fileID: 0}
   RecoilAmount: 0
   Pellets: 8

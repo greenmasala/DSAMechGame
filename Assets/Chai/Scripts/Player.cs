@@ -8,7 +8,6 @@ public class Player : Entity
 {
     public Transform[] Slots;
     public Equipment[] Weapons;
-    public GameObject WeaponTest;
     public TextMeshProUGUI[] EquipmentAmmo;
     public TextMeshProUGUI HealthText;
 

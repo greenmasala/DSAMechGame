@@ -84,6 +84,9 @@ MonoBehaviour:
   hp: 1000
   moveSpeed: 0
   model: {fileID: 0}
+  Slots:
+  - {fileID: 0}
+  - {fileID: 0}
   Weapons:
   - {fileID: 0}
   - {fileID: 0}
@@ -91,6 +94,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   HealthText: {fileID: 0}
+  DamageReduction: 0
 --- !u!114 &1247546841928860538
 MonoBehaviour:
   m_ObjectHideFlags: 0

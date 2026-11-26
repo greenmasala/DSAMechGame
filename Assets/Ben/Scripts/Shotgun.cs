@@ -58,12 +58,20 @@ public class Shotgun : GunEquipment
 
         if (Physics.Raycast(ShootPoint.position, dir, out RaycastHit hit, Range))
         {
+            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+
             Entity target = hit.collider.GetComponentInParent<Entity>();
             if (target != null && target != player)
             {
                 target.TakeDamage(Damage);
                 return target;
             }
+        }
+        else
+        {
+            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
+            StartCoroutine(SpawnTrail(trail, ShootPoint.position + ShootPoint.forward * Range, Vector3.zero, false));
         }
         return null;
     }

@@ -13,7 +13,8 @@ public class EquipmentSelectButton : MonoBehaviour
         if (equipment != null)
         {
             EquipmentPrefab = equipment;
-            EquipmentName.text = EquipmentPrefab.name;
+            EquipmentName.text = EquipmentPrefab.GetComponent<Equipment>().Name; 
+            EquipmentDescription.text = EquipmentPrefab.GetComponent<Equipment>().Description;
         }
     }
 }

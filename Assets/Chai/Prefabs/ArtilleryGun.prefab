@@ -77,7 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f3e9603fcbb754fa8f3fc11ecaa5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtilleryGun
-  Name: ArtilleryGun
+  Name: Artillery Gun
+  Description: Fires powerful artillery shots that explode on impact.
+  Icon: {fileID: 0}
   Ammo: 10
   IsUsing: 0
   InputType: 0

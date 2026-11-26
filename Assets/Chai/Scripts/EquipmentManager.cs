@@ -1,13 +1,15 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class EquipmentManager : MonoBehaviour
 {
     public List<GameObject> EquipmentList;
-    public List<GameObject> EquippedEquipments = new List<GameObject>();
     public EquipmentSelectButton[] EquipmentButtons;
+    public Equipment[] EquippedEquipment;
     GameObject selectedEquipment;
     public Player Player;
     public GameObject EquipmentSelectUI;
@@ -30,13 +32,18 @@ public class EquipmentManager : MonoBehaviour
 
     public void GetEquipment()
     {
+        EquippedEquipment = Player.Weapons; //need to fix
         List<GameObject> availablePool = new List<GameObject>();
 
         foreach (var item in EquipmentList)
         {
-            if (!EquippedEquipments.Contains(item))
+            if (!EquippedEquipment.Contains(item.GetComponent<Equipment>()))
             {
                 availablePool.Add(item);
+            }
+            else
+            {
+                Debug.Log($"{item} already equipped");
             }
         }
 
