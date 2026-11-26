@@ -58,14 +58,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8843221022471887631}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7070936, y: -0.002265946, z: -0.0022660068, w: 0.7071128}
-  m_LocalPosition: {x: -0.9269999, y: -0.7989998, z: 2.319}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.44184998, y: 1.26203, z: 0.44184998}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6550539396289534956}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: -0.367}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &9177548777323701115
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -137,13 +137,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LaserGun
   Name: LaserGun
   Ammo: 0
+  IsUsing: 0
   InputType: 0
   ShootPoint: {fileID: 0}
+  GunModel: {fileID: 0}
+  MuzzleFlash: {fileID: 0}
   Damage: 50
   FireRate: 0.5
   Range: 200
   Power: 0
   CanShoot: 0
+  Trail: {fileID: 0}
+  ImpactVFX: {fileID: 0}
+  RecoilAmount: 0
   EnergyCost: 25
   Beam: {fileID: 0}
   BeamDuration: 0.1
+  LogToConsole: 1

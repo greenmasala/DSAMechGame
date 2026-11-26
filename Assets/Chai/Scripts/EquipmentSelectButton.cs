@@ -4,19 +4,16 @@ using UnityEngine;
 public class EquipmentSelectButton : MonoBehaviour
 {
     public Equipment Equipment;
+    public GameObject EquipmentPrefab;
     public TextMeshProUGUI EquipmentName;
     public TextMeshProUGUI EquipmentDescription;
     
-    public void SetButtonValues(Equipment equipment)
+    public void SetButtonValues(GameObject equipment)
     {
         if (equipment != null)
         {
-            EquipmentName.text = equipment.Name;
+            EquipmentPrefab = equipment;
+            EquipmentName.text = EquipmentPrefab.name;
         }
-    }
-
-    public void SetValue()
-    {
-
     }
 }

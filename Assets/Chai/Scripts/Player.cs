@@ -26,12 +26,12 @@ public class Player : Entity
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log(Slots[0].GetComponentInChildren<Equipment>());
-        Transform test = Slots[0].GetChild(0);
-        Destroy(test.gameObject);
-        GameObject newWeapon = Instantiate(WeaponTest, Slots[0]);
-        newWeapon.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-        Weapons[0] = newWeapon.GetComponent<Equipment>();
+        //Debug.Log(Slots[0].GetComponentInChildren<Equipment>());
+        //Transform test = Slots[0].GetChild(0);
+        //Destroy(test.gameObject);
+        //GameObject newWeapon = Instantiate(WeaponTest, Slots[0]);
+        //newWeapon.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+        //Weapons[0] = newWeapon.GetComponent<Equipment>();
         UpdateText(0);
         UpdateText(1);
         UpdateHealthText();
