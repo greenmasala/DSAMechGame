@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GatlingGun
   Name: Gatling Gun
   Description: A reliable weapon. Spews tons of lead in a matter of seconds.
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 6ee52ef9b625f4f4eb1ac65c1c3e7bc9, type: 3}
   Ammo: 500
   IsUsing: 0
   InputType: 1

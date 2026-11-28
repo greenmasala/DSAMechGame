@@ -5,7 +5,7 @@ public class Equipment : MonoBehaviour
 {
     public string Name;
     public string Description;
-    public Image Icon;
+    public Sprite Icon;
     public int Ammo;
     public bool IsUsing;
   

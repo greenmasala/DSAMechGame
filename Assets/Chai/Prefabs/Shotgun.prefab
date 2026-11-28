@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shotgun
   Name: Shotgun
   Description: Powerful close range option.
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 67a1ccfb9708f1841a464e3b30419f30, type: 3}
   Ammo: 0
   IsUsing: 0
   InputType: 0

@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &66718656 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6058995746270806356, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+  m_PrefabInstance: {fileID: 3866815713563269943}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &105004939
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +415,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
+--- !u!224 &597857309 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1087206754560461513, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+  m_PrefabInstance: {fileID: 3866815713563269943}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &609233531 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4822135127285650455, guid: ec4a1779fdb70e846bda9a5729989f5e, type: 3}
@@ -558,6 +574,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e4616bafb6ade49a32f07dc9adac58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentSelectButton
+--- !u!224 &1441079527 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5185390206673412908, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+  m_PrefabInstance: {fileID: 3866815713563269943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1441175657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 453669992004248055, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+  m_PrefabInstance: {fileID: 3866815713563269943}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &1491488113 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1438947596594264166, guid: 1a7150340291f3141b2581904d57cd70, type: 3}
@@ -1043,6 +1075,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 787440793}
+    - target: {fileID: 4702980454662874590, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+      propertyPath: EquipmentIcon
+      value: 
+      objectReference: {fileID: 1441175657}
+    - target: {fileID: 5060597029954706256, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+      propertyPath: EquipmentIcon
+      value: 
+      objectReference: {fileID: 66718656}
     - target: {fileID: 5191274820534478207, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1053,7 +1093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6214140822028504986, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7251685908386811745, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1063,6 +1103,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 787440793}
+    - target: {fileID: 8941628107469370177, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+      propertyPath: Rect
+      value: 
+      objectReference: {fileID: 1441079527}
+    - target: {fileID: 8941628107469370177, guid: 55aa5dc4b5c6d3e4cad13a68ea1dbfe6, type: 3}
+      propertyPath: BGImage
+      value: 
+      objectReference: {fileID: 597857309}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
