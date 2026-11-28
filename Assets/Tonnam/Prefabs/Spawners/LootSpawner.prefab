@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2188380008190349109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 533097804082457419}
+  - component: {fileID: 3590906616879640226}
+  - component: {fileID: 71130071041952520}
+  m_Layer: 0
+  m_Name: LootSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &533097804082457419
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188380008190349109}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3590906616879640226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188380008190349109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d62c511de3ebb49a38d16879f67e56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Spawner
+  prefabs:
+  - {fileID: 8556435112006314053, guid: 8b434b364ad36524d96d1bd95b250c0f, type: 3}
+  - {fileID: 8556435112006314053, guid: b94850aad763a5e4c8b666740311ab88, type: 3}
+  - {fileID: 8556435112006314053, guid: 64395a0a417bc0441ad35185ee9b963a, type: 3}
+  config:
+    SpawnType: 0
+    Offset: {x: 0, y: 10, z: 0}
+    SpawnRadius: 0
+    RandomizeRotation: 0
+    MinRotation: {x: 0, y: 0, z: 0}
+    MaxRotation: {x: 0, y: 0, z: 0}
+  activateOnStart: 1
+  startPositionY: 300
+  raycastDistance: 500
+--- !u!114 &71130071041952520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188380008190349109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef210ed213706184b9cfdd56a3669859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapStructure
+  model: {fileID: 0}
+  OnStructureLoadedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStructureUnloadedEvent:
+    m_PersistentCalls:
+      m_Calls: []
