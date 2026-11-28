@@ -33,6 +33,16 @@ public class Entity : MonoBehaviour
         if (hp <= 0) OnDead();
     }
 
+    public void Heal(float amount)
+    {
+        if (!isActive) return;
+
+        hp += amount;
+        if (hp > maxHP) hp = maxHP;
+
+        OnHealthChanged?.Invoke(hp);
+    }
+
     // [Ben] Made this virtual so my Jeep can blow up when it dies instead of just disappearing
     protected virtual void OnDead()
     {
