@@ -48,6 +48,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: 8556435112006314053, guid: 8b434b364ad36524d96d1bd95b250c0f, type: 3}
   - {fileID: 8556435112006314053, guid: b94850aad763a5e4c8b666740311ab88, type: 3}
+  - {fileID: 8556435112006314053, guid: 64395a0a417bc0441ad35185ee9b963a, type: 3}
   config:
     SpawnType: 0
     Offset: {x: 0, y: 10, z: 0}
