@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 
 public class GatlingGun : GunEquipment
 {
@@ -42,8 +41,7 @@ public class GatlingGun : GunEquipment
 
         if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, Range))
         {
-            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
+            StartCoroutine(SpawnTrail(ShootPoint.position, hit.point, hit.normal, true));
 
             if (hit.collider.GetComponent<Entity>())
             {
@@ -54,8 +52,7 @@ public class GatlingGun : GunEquipment
         }
         else
         {
-            TrailRenderer trail = Instantiate(Trail, ShootPoint.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, ShootPoint.position + ShootPoint.forward * Range, Vector3.zero, false));
+            StartCoroutine(SpawnTrail(ShootPoint.position, ShootPoint.position + ShootPoint.forward * Range, Vector3.zero, false));
         }
     }
 }

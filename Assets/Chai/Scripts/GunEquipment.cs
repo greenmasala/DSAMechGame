@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.Pool;
 
 public class GunEquipment : Equipment
 {
@@ -23,6 +23,9 @@ public class GunEquipment : Equipment
     Sequence recoilSequence;
     Tween shakeTween;
 
+    private IObjectPool<TrailRenderer> trailPool;
+    private IObjectPool<GameObject> impactVFXPool;
+
     private void Awake()
     {
         normalAmount = transform.localPosition.z;
@@ -34,6 +37,26 @@ public class GunEquipment : Equipment
         {
             Debug.Log("No ShootPoint found!");
         }
+
+        trailPool = new ObjectPool<TrailRenderer>(
+            createFunc: () => Instantiate(Trail),
+            actionOnGet: (trail) => trail.gameObject.SetActive(true),
+            actionOnRelease: (trail) => trail.gameObject.SetActive(false),
+            actionOnDestroy: (trail) => Destroy(trail.gameObject),
+            collectionCheck: false,
+            defaultCapacity: 10,
+            maxSize: 20
+        );
+
+        impactVFXPool = new ObjectPool<GameObject>(
+            createFunc: () => Instantiate(ImpactVFX),
+            actionOnGet: (vfx) => vfx.SetActive(true),
+            actionOnRelease: (vfx) => vfx.SetActive(false),
+            actionOnDestroy: (vfx) => Destroy(vfx),
+            collectionCheck: false,
+            defaultCapacity: 10,
+            maxSize: 20
+        );
     }
 
     protected void Recoil()
@@ -74,17 +97,22 @@ public class GunEquipment : Equipment
         }
     }
 
-    protected IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
+    protected IEnumerator SpawnTrail(Vector3 StartPoint, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
     {
-        Debug.Log("test");
-        Vector3 startPosition = Trail.transform.position;
+        TrailRenderer Trail = trailPool.Get();
+
+        // freaky ahh way to move the trail without it being visible at the start
+        Trail.enabled = false;
+        Trail.transform.position = StartPoint;
+        Trail.Clear();
+        Trail.enabled = true;
+
         float distance = Vector3.Distance(Trail.transform.position, HitPoint);
         float remainingDistance = distance;
 
         while (remainingDistance > 0)
         {
-            Trail.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (remainingDistance / distance));
-
+            Trail.transform.position = Vector3.Lerp(StartPoint, HitPoint, 1 - (remainingDistance / distance));
             remainingDistance -= Range * Time.deltaTime;
 
             yield return null;
@@ -94,9 +122,19 @@ public class GunEquipment : Equipment
         Trail.transform.position = HitPoint;
         if (MadeImpact)
         {
-            Instantiate(ImpactVFX, HitPoint, Quaternion.LookRotation(HitNormal));
+            GameObject vfxInstance = impactVFXPool.Get();
+            vfxInstance.transform.position = HitPoint;
+            vfxInstance.transform.rotation = Quaternion.LookRotation(HitNormal);
+            StartCoroutine(DelayedRelease(vfxInstance, 1f)); // 1 second delay is arbitrary, i just made it up. im too lazy for this
         }
 
-        Destroy(Trail.gameObject, Trail.time);
+        yield return new WaitForSeconds(Trail.time);
+        trailPool.Release(Trail);
+    }
+
+    protected IEnumerator DelayedRelease(GameObject vfxInstance, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        impactVFXPool.Release(vfxInstance);
     }
 }
